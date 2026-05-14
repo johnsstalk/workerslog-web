@@ -1,9 +1,8 @@
-
 [
   {
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
-      "namespace": "Workers Log",
+      "namespace": "workerslog",
       "package_name": "com.johnsstalk.workerslog",
       "sha256_cert_fingerprints": [
         "YOUR:SHA256:5F:F9:17:18:7A:FE:54:09:FE:C9:32:BA:DD:9A:F3:73:8A:F5:D1:ED:C6:9C:27:AC:82:9F:A0:47:93:E4:C5:D0"
