@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirecting...</title>
+
+  <script>
+    // Read URL params/hash
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+
+    const accessToken = params.get("access_token");
+    const refreshToken = params.get("refresh_token");
+    const type = params.get("type");
+
+    // Build deep link
+    const deepLink =
+      `workerslog://reset-password` +
+      `?access_token=${accessToken}` +
+      `&refresh_token=${refreshToken}` +
+      `&type=${type}`;
+
+    // Redirect into app
+    window.location.href = deepLink;
+  </script>
+</head>
+<body>
+  Redirecting to app...
+</body>
+</html>
