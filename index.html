@@ -2,10 +2,9 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>Redirecting...</title>
+  <title>WorkersLog Redirect</title>
 
   <script>
-    // Read URL params/hash
     const hash = window.location.hash.substring(1);
     const params = new URLSearchParams(hash);
 
@@ -13,18 +12,17 @@
     const refreshToken = params.get("refresh_token");
     const type = params.get("type");
 
-    // Build deep link
     const deepLink =
       `workerslog://reset-password` +
-      `?access_token=${accessToken}` +
-      `&refresh_token=${refreshToken}` +
-      `&type=${type}`;
+      `?access_token=${encodeURIComponent(accessToken || "")}` +
+      `&refresh_token=${encodeURIComponent(refreshToken || "")}` +
+      `&type=${encodeURIComponent(type || "")}`;
 
-    // Redirect into app
-    window.location.href = deepLink;
+    window.location.replace(deepLink);
   </script>
 </head>
+
 <body>
-  Redirecting to app...
+  Redirecting to WorkersLog...
 </body>
 </html>
