@@ -1,7 +1,7 @@
 {
   "headers": [
     {
-      "source": "/.well-known/assetlinks.json",
+      "source": "/public/.well-known/assetlinks.json",
       "headers": [
         {
           "key": "Content-Type",
