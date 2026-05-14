@@ -1,5 +1,4 @@
 {
-  "outputDirectory": ".",
   "headers": [
     {
       "source": "/.well-known/assetlinks.json",
