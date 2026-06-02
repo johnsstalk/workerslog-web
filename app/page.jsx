@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from "react";
 import {
   WifiOff, Shield, Zap, BarChart2, CreditCard, Cloud,
