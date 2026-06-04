@@ -79,8 +79,8 @@ export default function HeroSection() {
           {/* ── Right: phone mockup ── */}
           <div className="wl-hero-phone" style={{ flex: '0 0 auto', display: 'flex', justifyContent: 'center' }}>
             <div style={{
-              width: 248, height: 506,
-              background: 'var(--color-surface-container-high)',
+              width: 248, height: 550,
+                background: '#111111',
               borderRadius: 40,
               padding: 6,
               boxShadow: '0 40px 100px rgba(0,0,0,0.55), 0 0 0 1px var(--color-outline-variant)',
@@ -91,7 +91,7 @@ export default function HeroSection() {
                 position: 'absolute', top: 10, left: '50%',
                 transform: 'translateX(-50%)',
                 width: 72, height: 20,
-                background: 'var(--color-surface-container-high)',
+                background: '#111111',
                 borderRadius: 'var(--radius-full)',
                 zIndex: 2,
               }} />
