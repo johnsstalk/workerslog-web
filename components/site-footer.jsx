@@ -1,3 +1,5 @@
+"use client";
+
 import SiteLogo from './site-logo';
 
 export default function SiteFooter() {
