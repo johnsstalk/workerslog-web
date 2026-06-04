@@ -46,7 +46,7 @@ function FeatureLine({ label, locked }) {
 export default function PricingSection() {
   return (
     <>
-      <section id="pricing" style={{ padding: 'var(--space-3xl) 24px' }}>
+      <section id="pricing" style={{ padding: 'var(--space-3xl) var(--section-px)' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 48 }}>
             <span style={{
@@ -122,12 +122,7 @@ export default function PricingSection() {
                 background: 'var(--color-primary-brand)',
                 fontSize: 15, fontWeight: 600, color: '#FFFFFF',
                 fontFamily: "'Outfit', sans-serif",
-              }}>Get Pro — Pay via UPI/Card</a>
-              <p style={{
-                textAlign: 'center', marginTop: 12,
-                fontFamily: "'Outfit', sans-serif", fontSize: 12,
-                color: 'var(--color-outline)',
-              }}>Pay via UPI, card, or netbanking · Powered by Razorpay · Cancel anytime</p>
+              }}>Get Pro on Google Play</a>
             </div>
           </div>
         </div>

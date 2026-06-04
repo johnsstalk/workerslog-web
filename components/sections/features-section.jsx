@@ -71,7 +71,7 @@ function FeatureCard({ Icon, title, desc, isPro }) {
 export default function FeaturesSection() {
   return (
     <>
-      <section id="features" style={{ padding: 'var(--space-3xl) 24px' }}>
+      <section id="features" style={{ padding: 'var(--space-3xl) var(--section-px)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 48 }}>
             <span style={{

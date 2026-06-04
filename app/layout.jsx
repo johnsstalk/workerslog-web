@@ -45,6 +45,7 @@ export default function RootLayout({ children }) {
             --text-display: clamp(36px, 5vw, 60px);
             --text-h1:      clamp(28px, 4vw, 44px);
             --text-h2:      clamp(22px, 3vw, 32px);
+            --section-px:   clamp(24px, 5vw, 64px);
           }
 
           @media (prefers-color-scheme: light) {

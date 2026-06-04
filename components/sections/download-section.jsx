@@ -3,7 +3,7 @@ export default function DownloadSection() {
     <>
       <section id="download" style={{
         background: 'var(--color-surface)',
-        padding: 'var(--space-3xl) 24px',
+        padding: 'var(--space-3xl) var(--section-px)',
         textAlign: 'center',
       }}>
         <div style={{ maxWidth: 600, margin: '0 auto' }}>

@@ -18,7 +18,7 @@ export default function HowItWorksSection() {
     <>
       <section style={{
         background: 'var(--color-surface)',
-        padding: 'var(--space-3xl) 24px',
+        padding: 'var(--space-3xl) var(--section-px)',
       }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 56 }}>

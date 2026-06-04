@@ -34,7 +34,7 @@ export default function PrivacyPage() {
   return (
     <>
       <SiteNav minimal />
-      <main style={{ maxWidth: 740, margin: '0 auto', padding: '48px 24px 80px' }}>
+      <main style={{ maxWidth: 740, margin: '0 auto', padding: '48px var(--section-px) 80px' }}>
         <p style={{
           fontFamily: "'Sora', sans-serif", fontSize: 11, fontWeight: 700,
           letterSpacing: '0.1em', textTransform: 'uppercase',

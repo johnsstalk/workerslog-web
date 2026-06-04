@@ -7,7 +7,7 @@ export default function HeroSection() {
 
   return (
     <>
-      <section style={{ padding: 'var(--space-3xl) 24px 60px', maxWidth: 1100, margin: '0 auto' }}>
+      <section style={{ padding: 'var(--space-3xl) var(--section-px) 60px', maxWidth: 1100, margin: '0 auto' }}>
         <div className="wl-hero-inner" style={{ display: 'flex', alignItems: 'center', gap: 56 }}>
 
           {/* ── Left: text content ── */}
