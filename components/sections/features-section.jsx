@@ -1,6 +1,6 @@
 'use client';
 
-import { WifiOff, Shield, Zap, BarChart2, CreditCard, Cloud } from 'lucide-react';
+import { WifiOff, Shield, Zap, BarChart2, CreditCard, Cloud, LayoutDashboard } from 'lucide-react';
 
 const FEATURES = [
   {
@@ -28,7 +28,7 @@ const FEATURES = [
     desc: 'Sync to secure cloud automatically. Switch phones without losing a single record. Restore in seconds.',
   },
   {
-    Icon: BarChart3, title: 'Overview',
+    Icon: LayoutDashboard, title: 'Overview',
     desc: 'Quick summary of attendance, paid, and balances — daily and project-wise on their dedicated pages.',
   },
 ];
