@@ -28,7 +28,7 @@ const FEATURES = [
     desc: 'Sync to secure cloud automatically. Switch phones without losing a single record. Restore in seconds.',
   },
   {
-    Icon: LayoutDashboard, title: 'Overview',
+    Icon: BarChart3, title: 'Overview',
     desc: 'Quick summary of attendance, paid, and balances — daily and project-wise on their dedicated pages.',
   },
 ];
