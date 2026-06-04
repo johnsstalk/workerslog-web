@@ -79,7 +79,7 @@ export default function HeroSection() {
           {/* ── Right: phone mockup ── */}
           <div className="wl-hero-phone" style={{ flex: '0 0 auto', display: 'flex', justifyContent: 'center' }}>
             <div style={{
-              width: 248, height: 506,
+              width: 248, height: 550,
               background: 'var(--color-surface-container-high)',
               borderRadius: 40,
               padding: 6,
