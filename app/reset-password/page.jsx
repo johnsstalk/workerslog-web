@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import SiteLogo from '../../components/site-logo';
 
 export default function ResetPasswordPage() {
   const [message, setMessage] = useState('Redirecting to WorkersLog...');
@@ -34,38 +35,25 @@ export default function ResetPasswordPage() {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
-        background: '#0C0C0D',
-        color: '#F0F0F5',
+        color: 'var(--color-on-surface)',
         fontFamily: "'Outfit', system-ui, sans-serif",
         fontSize: 16,
         textAlign: 'center',
-        padding: 24,
+        padding: '48px var(--section-px) 80px',
         gap: 16,
+        width: '100%',
       }}
     >
-      {/* Logo */}
-      <div
-        style={{
-          width: 48,
-          height: 48,
-          borderRadius: 12,
-          background: '#F97316',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 24,
-          marginBottom: 8,
-        }}
-      >
-        ⚒️
+      <div style={{ marginBottom: 12 }}>
+        <SiteLogo size="large" />
       </div>
 
-      <div style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 18 }}>
-        Workers<span style={{ color: '#F97316' }}>Log</span>
-      </div>
-
-      <div style={{ color: '#8A8A9A', maxWidth: 320, lineHeight: 1.6 }}>
+      <div style={{ color: 'var(--color-on-surface-variant)', maxWidth: 540, lineHeight: 1.6 }}>
         {message}
+      </div>
+
+      <div style={{ marginTop: 18 }}>
+        <a href="/" style={{ color: 'var(--color-primary)', fontWeight: 600, textDecoration: 'none' }}>Return to website</a>
       </div>
     </div>
   );
