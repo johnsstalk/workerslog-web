@@ -37,6 +37,10 @@ export default function SiteNav({ minimal = false }) {
                   onMouseLeave={e => e.currentTarget.style.color = 'var(--color-on-surface-variant)'}
                   >{l}</a>
                 ))}
+                <a href="/guide" style={{
+                  fontFamily: "'Outfit', sans-serif", fontSize: 15,
+                  color: 'var(--color-on-surface-variant)'
+                }}>Guide</a>
               </div>
 
               <div className="wl-nav-cta" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -79,6 +83,11 @@ export default function SiteNav({ minimal = false }) {
               borderBottom: '1px solid var(--color-outline-variant)',
             }}>{l}</a>
           ))}
+          <a href="/guide" onClick={handleClose} style={{
+            fontFamily: "'Sora', sans-serif", fontSize: 24, fontWeight: 700,
+            color: 'var(--color-on-surface)', padding: '18px 0',
+            borderBottom: '1px solid var(--color-outline-variant)'
+          }}>Guide</a>
           <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 12 }}>
             <a href="#download" onClick={handleClose} style={{
               padding: '14px', borderRadius: 'var(--radius-m)',

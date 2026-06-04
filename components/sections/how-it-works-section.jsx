@@ -35,6 +35,16 @@ export default function HowItWorksSection() {
               fontFamily: "'Outfit', sans-serif", fontSize: 17,
               color: 'var(--color-on-surface-variant)',
             }}>No setup fee. No training. No paperwork.</p>
+            <div style={{ marginTop: 18 }}>
+              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 15, color: 'var(--color-on-surface-variant)', marginBottom: 12 }}>
+                For full step-by-step instructions and printable details, open the complete guide.
+              </p>
+              <a href="/guide" style={{
+                display: 'inline-block', padding: '10px 16px', borderRadius: 10,
+                background: 'var(--color-primary-brand)', color: '#FFFFFF', fontWeight: 700,
+                textDecoration: 'none', fontFamily: "'Outfit', sans-serif",
+              }}>Read the Guide</a>
+            </div>
           </div>
 
           <div className="wl-how-grid">
