@@ -75,7 +75,7 @@ export default function HowItWorksSection() {
             <div className="wl-how-preview" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <div style={{
                 width: 220, height: 480,
-                background: 'var(--color-surface-container-high)',
+                  background: '#111111',
                 borderRadius: 32, padding: 5,
                 boxShadow: '0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px var(--color-outline-variant)',
               }}>
