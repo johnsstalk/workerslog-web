@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const STEPS = [
   { num: '01', title: 'Workers List', desc: 'Name, job category, daily rate. Manage workers quickly.', img: '/screenshots/1-workerslist.png' },
@@ -12,6 +12,22 @@ const STEPS = [
 
 export default function HowItWorksSection() {
   const [active, setActive] = useState(0);
+  const [prev, setPrev] = useState(null);
+  const [showNew, setShowNew] = useState(false);
+
+  const handleSetActive = (i) => {
+    if (i === active) return;
+    setPrev(active);
+    setActive(i);
+    setShowNew(false);
+    // trigger crossfade on next tick
+    setTimeout(() => setShowNew(true), 20);
+  };
+
+  useEffect(() => {
+    if (prev === null) return;
+    // no-op: effect kept for potential future analytics or focus management
+  }, [prev]);
 
   return (
     <>
@@ -46,31 +62,17 @@ export default function HowItWorksSection() {
 
           <div className="wl-how-grid">
             {/* Steps column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {STEPS.map(({ num, title, desc }, i) => (
                 <div
                   key={num}
+                  className={`wl-step ${i === active ? 'active' : ''}`}
                   role="button"
                   tabIndex={0}
-                  onClick={() => setActive(i)}
-                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(i); } }}
-                  style={{
-                    display: 'flex', gap: 20, alignItems: 'flex-start',
-                    background: 'var(--color-surface-container)',
-                    border: '1px solid var(--color-outline-variant)',
-                    borderRadius: 'var(--radius-card)',
-                    padding: '24px', cursor: 'pointer',
-                    ...(i === active ? { borderColor: 'var(--color-primary-brand)', boxShadow: '0 8px 30px rgba(2,6,23,0.06)' } : {}),
-                  }}>
-                  <div style={{
-                    flexShrink: 0,
-                    width: 44, height: 44,
-                    borderRadius: 'var(--radius-s)',
-                    background: i === active ? 'var(--color-primary)' : 'var(--color-primary-brand)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontFamily: "'Sora', sans-serif", fontWeight: 800, fontSize: 14,
-                    color: '#FFFFFF',
-                  }}>{num}</div>
+                  onClick={() => handleSetActive(i)}
+                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSetActive(i); } }}
+                >
+                  <div className="wl-step-num">{num}</div>
                   <div>
                     <h3 style={{
                       fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 16,
@@ -78,7 +80,7 @@ export default function HowItWorksSection() {
                     }}>{title}</h3>
                     <p style={{
                       fontFamily: "'Outfit', sans-serif", fontSize: 14, lineHeight: 1.6,
-                      color: 'var(--color-on-surface-variant)',
+                      color: 'var(--color-on-surface-variant)', margin: 0,
                     }}>{desc}</p>
                   </div>
                 </div>
@@ -87,18 +89,16 @@ export default function HowItWorksSection() {
 
             {/* Screenshot preview */}
             <div className="wl-how-preview" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <div style={{
-                width: 220, height: 480,
-                background: '#111111',
-                borderRadius: 32, padding: 5,
-                boxShadow: '0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px var(--color-outline-variant)',
-              }}>
-                <div style={{ width: '100%', height: '100%', borderRadius: 28, overflow: 'hidden' }}>
-                  <img
-                    src={STEPS[active].img}
-                    alt={STEPS[active].title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
-                  />
+              <div className="wl-preview-frame">
+                <div className="wl-preview-inner">
+                  {STEPS.map((s, i) => (
+                    <img
+                      key={s.img}
+                      src={s.img}
+                      alt={s.title}
+                      className={`wl-preview-img ${i === active && showNew ? 'visible' : ''}`}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -109,11 +109,39 @@ export default function HowItWorksSection() {
       <style>{`
         .wl-how-grid {
           display: grid;
-          grid-template-columns: 1fr 280px;
+          grid-template-columns: 1fr 300px;
           gap: 48px;
           align-items: center;
         }
-        @media (max-width: 840px) {
+        .wl-step {
+          display: flex; gap: 20px; align-items: flex-start;
+          background: var(--color-surface-container);
+          border: 1px solid var(--color-outline-variant);
+          border-radius: var(--radius-card);
+          padding: 20px; cursor: pointer;
+          transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+        }
+        .wl-step:hover { transform: translateY(-2px); }
+        .wl-step.active { transform: translateY(-6px); border-color: var(--color-primary-brand); box-shadow: 0 18px 40px rgba(2,6,23,0.08); }
+        .wl-step-num {
+          flex-shrink: 0; width: 46px; height: 46px; border-radius: var(--radius-s);
+          background: var(--color-primary-brand); display: flex; align-items: center; justify-content: center;
+          font-family: 'Sora', sans-serif; font-weight: 800; font-size: 14px; color: #FFFFFF;
+          transition: transform 220ms ease, background 220ms ease;
+        }
+        .wl-step.active .wl-step-num { transform: scale(1.06); background: var(--color-primary); }
+
+        .wl-preview-frame {
+          width: 240px; height: 520px; border-radius: 32px; padding: 6px; background: #0b0b0b;
+          box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px var(--color-outline-variant);
+        }
+        .wl-preview-inner { position: relative; width: 100%; height: 100%; border-radius: 26px; overflow: hidden; }
+        .wl-preview-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top;
+          opacity: 0; transform: translateY(8px) scale(0.995); transition: opacity 320ms ease, transform 420ms cubic-bezier(.2,.9,.2,1);
+        }
+        .wl-preview-img.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+        @media (max-width: 920px) {
           .wl-how-grid { grid-template-columns: 1fr; }
           .wl-how-preview { display: none; }
         }
