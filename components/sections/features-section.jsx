@@ -27,6 +27,10 @@ const FEATURES = [
     Icon: Cloud, title: 'Cloud Backup (Pro)',
     desc: 'Sync to secure cloud automatically. Switch phones without losing a single record. Restore in seconds.',
   },
+  {
+    Icon: Cloud, title: 'Cloud Backup (Pro)',
+    desc: 'Sync to secure cloud automatically. Switch phones without losing a single record. Restore in seconds.',
+  },
 ];
 
 function FeatureCard({ Icon, title, desc, isPro }) {
