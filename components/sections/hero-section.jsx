@@ -91,7 +91,7 @@ export default function HeroSection() {
                 position: 'absolute', top: 10, left: '50%',
                 transform: 'translateX(-50%)',
                 width: 72, height: 20,
-                background: 'var(--color-surface-container-high)',
+                background: '#111111',
                 borderRadius: 'var(--radius-full)',
                 zIndex: 2,
               }} />
