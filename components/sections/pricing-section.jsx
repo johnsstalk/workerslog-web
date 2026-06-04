@@ -123,6 +123,11 @@ export default function PricingSection() {
                 fontSize: 15, fontWeight: 600, color: '#FFFFFF',
                 fontFamily: "'Outfit', sans-serif",
               }}>Get Pro on Google Play</a>
+              <p style={{
+                textAlign: 'center', marginTop: 12,
+                fontFamily: "'Outfit', sans-serif", fontSize: 12,
+                color: 'var(--color-outline)',
+              }}>Pay via UPI, card, or netbanking · Cancel anytime</p>
             </div>
           </div>
         </div>

@@ -4,7 +4,6 @@ export const metadata = {
     'Offline-first attendance and wage tracking for construction contractors. Works without internet. AES-256 encrypted. Built for how India works.',
   keywords: 'workers log, wage tracker, attendance app, contractor, India, construction, offline',
 };
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -17,7 +16,6 @@ export default function RootLayout({ children }) {
         />
         <style>{`
           *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
           :root {
             --color-bg:                     #0F1418;
             --color-surface:                #131923;
@@ -47,7 +45,6 @@ export default function RootLayout({ children }) {
             --text-h2:      clamp(22px, 3vw, 32px);
             --section-px:   clamp(24px, 5vw, 64px);
           }
-
           @media (prefers-color-scheme: light) {
             :root {
               --color-bg:                     #F6F9FF;
@@ -64,7 +61,6 @@ export default function RootLayout({ children }) {
               --color-nav-bg:                 rgba(246, 249, 255, 0.88);
             }
           }
-
           html, body {
             background: var(--color-bg);
             color: var(--color-on-surface);
@@ -72,7 +68,6 @@ export default function RootLayout({ children }) {
             -webkit-font-smoothing: antialiased;
             scroll-behavior: smooth;
           }
-
           a { color: inherit; text-decoration: none; }
           img { max-width: 100%; display: block; }
         `}</style>
