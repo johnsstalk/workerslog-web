@@ -71,46 +71,14 @@ export default function HowItWorksSection() {
               ))}
             </div>
 
-            <div style={{
-  width: 220,
-  height: 489, // 220 × (2400/1080)
-  background: 'var(--color-surface-container-high)',
-  borderRadius: 36,
-  padding: 5,
-  boxShadow: '0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px var(--color-outline-variant)',
-  position: 'relative',
-}}>
-  {/* Camera island */}
-  <div style={{
-    position: 'absolute',
-    top: 10,
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: 72,
-    height: 20,
-    background: '#000',
-    borderRadius: '999px',
-    zIndex: 2,
-  }} />
-
-  <div style={{
-    width: '100%',
-    height: '100%',
-    borderRadius: 31,
-    overflow: 'hidden',
-  }}>
-    <img
-      src="/screenshots/2-workers_daily.png"
-      alt="Workers Log daily attendance view"
-      style={{
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        objectPosition: 'top',
-      }}
-    />
-  </div>
-</div>
+            {/* Screenshot preview */}
+            <div className="wl-how-preview" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <div style={{
+                width: 220, height: 420,
+                background: 'var(--color-surface-container-high)',
+                borderRadius: 32, padding: 5,
+                boxShadow: '0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px var(--color-outline-variant)',
+              }}>
                 <div style={{ width: '100%', height: '100%', borderRadius: 28, overflow: 'hidden' }}>
                   <img
                     src="/screenshots/2-workers_daily.png"
