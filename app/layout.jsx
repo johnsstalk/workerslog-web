@@ -5,9 +5,9 @@ export const metadata = {
   keywords: 'workers log, wage tracker, attendance app, contractor, India, construction, offline',
   
   icons: {
-    icon: '/workers_log_circle_icon.png',
-    shortcut: '/workers_log_circle_icon.png',
-    apple: '/workers_log_circle_icon.png',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
 };
 export default function RootLayout({ children }) {
