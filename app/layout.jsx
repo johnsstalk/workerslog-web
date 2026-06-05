@@ -3,6 +3,12 @@ export const metadata = {
   description:
     'Offline-first attendance and wage tracking for construction contractors. Works without internet. AES-256 encrypted. Built for how India works.',
   keywords: 'workers log, wage tracker, attendance app, contractor, India, construction, offline',
+  
+  icons: {
+    icon: '/workers_log_icon.png',
+    shortcut: '/workers_log_icon.png',
+    apple: '/workers_log_icon.png',
+  },
 };
 export default function RootLayout({ children }) {
   return (
