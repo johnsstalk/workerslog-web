@@ -54,7 +54,7 @@ export default function DownloadSection() {
             fontFamily: "'Outfit', sans-serif", fontSize: 13,
             color: 'var(--color-outline)',
           }}>
-            Android 7.0 and above · ~15 MB
+            Android 7.0 and above · ~54 MB
           </p>
         </div>
       </section>

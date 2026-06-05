@@ -9,7 +9,8 @@ export default function GuideContent() {
   ];
 
   const TERMS = [
-    ['ATP', 'Amount To Pay / Daily Rates'],
+    ['ATP', 'Amount To Pay — calculated daily wage based on attendance status and daily rate'],
+    ['Daily Rate', "Worker's base wage per day, used to calculate ATP"],
     ['P', 'Present / Full Day'],
     ['H', 'Half Day'],
     ['A', 'Absent'],
@@ -17,6 +18,8 @@ export default function GuideContent() {
     ['PH', 'Public Holiday'],
     ['PAY', 'Settlement Entry'],
     ['PRJ', 'Project/Site Work Entry'],
+    ['Mode 1', 'Daily work mode — affects daily ATP and daily balance only'],
+    ['Mode 2', 'Project/site work mode — affects project accounting only, not daily balance'],
     ['Daily Ledger', 'Daily wage and settlement accounting'],
     ['Project Accounting', 'Separate accounting for project/site earnings'],
     ['Advance', 'Extra payment given before final settlement'],
@@ -26,6 +29,7 @@ export default function GuideContent() {
     ['Project Rate', 'Worker payment rate for project/site work'],
     ['Unified Ledger Timeline', 'Single timeline containing all worker activity'],
     ['Payment Cycle', 'Daily, Weekly, or Monthly payment structure'],
+    ['Total Outstanding', 'Worker cumulative unpaid balance across their entire record history of daily accounting'],
   ];
 
   const STATUS = [
@@ -94,7 +98,7 @@ export default function GuideContent() {
             <div className="wl-step-num">01</div>
             <h2 className="wl-card-title">Workers List</h2>
           </div>
-          <p className="wl-body">The main screen where you manage all workers. Add worker name, category, payment cycle, and daily/weekly/monthly rates.</p>
+          <p className="wl-body">The main screen where you manage all workers. Add worker name, category, daily rate, and payment cycle (Daily / Weekly / Monthly).</p>
           <ul className="wl-list">
             <li>Add new workers using <strong>+ Add Worker</strong></li>
             <li>Search and filter workers instantly</li>
@@ -258,15 +262,17 @@ export default function GuideContent() {
         .wl-card {
           background: var(--color-surface-container);
           border: 1px solid var(--color-outline-variant);
-          border-radius: var(--radius-l);
+          border-radius: var(--radius-card);
           padding: 28px;
+          transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
         }
+        .wl-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,23,0.06); }
         .wl-card-head {
           display: flex; align-items: center; gap: 16px;
           margin-bottom: 16px;
         }
         .wl-step-num {
-          flex-shrink: 0; width: 48px; height: 48px;
+          flex-shrink: 0; width: 46px; height: 46px;
           border-radius: var(--radius-s);
           background: var(--color-primary-brand);
           display: flex; align-items: center; justify-content: center;
