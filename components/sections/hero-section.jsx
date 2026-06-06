@@ -42,8 +42,7 @@ export default function HeroSection() {
               color: 'var(--color-on-surface-variant)',
               marginBottom: 36, maxWidth: 480,
             }}>
-              Offline-first attendance and wage tracking for construction contractors.
-              Works without internet. AES-256 encrypted. Built for how India works.
+              Track attendance, wages, dues, and project-wise earnings for every worker you manage—all in one place.
             </p>
 
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 44 }}>
