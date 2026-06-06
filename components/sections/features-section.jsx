@@ -1,6 +1,6 @@
 'use client';
 
-import { WifiOff, Shield, Zap, BarChart2, CreditCard, Cloud, LayoutDashboard, FileText, PDF } from 'lucide-react';
+import { WifiOff, Shield, Zap, BarChart2, CreditCard, Cloud, LayoutDashboard, FileText, FilePdfOutlined  } from 'lucide-react';
 
 const FEATURES = [
   {
@@ -36,7 +36,7 @@ const FEATURES = [
     desc: 'Generate detailed worker salary slips with full attendance, wage, and project-wise breakdown.',
   },
   {
-    Icon: PDF, title: 'PDF Export',
+    Icon: FilePdfOutlined, title: 'PDF Export',
     desc: 'Export attendance sheets and salary reports as PDF. Share with workers or keep digital records.',
   }
 ];
