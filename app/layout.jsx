@@ -1,8 +1,8 @@
 export const metadata = {
-  title: 'Workers Log — Smart Wage Manager',
+  title: 'Workers Log — Every Worker. Every Record. One Place.',
   description:
-    'Offline-first attendance and wage tracking for construction contractors. Works without internet. AES-256 encrypted. Built for how India works.',
-  keywords: 'workers log, wage tracker, attendance app, contractor, India, construction, offline',
+    'Track attendance, wages, dues, and project-wise earnings for every worker you manage—all in one place.',
+  keywords: 'worker management, attendance tracking, wage calculation, project earnings, workforce management, labor record-keeping',
 };
 export default function RootLayout({ children }) {
   return (

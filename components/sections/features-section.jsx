@@ -1,6 +1,6 @@
 'use client';
 
-import { WifiOff, Shield, Zap, BarChart2, CreditCard, Cloud, LayoutDashboard } from 'lucide-react';
+import { WifiOff, Shield, Zap, BarChart2, CreditCard, Cloud, LayoutDashboard, FileText, PDF } from 'lucide-react';
 
 const FEATURES = [
   {
@@ -31,6 +31,14 @@ const FEATURES = [
     Icon: LayoutDashboard, title: 'Overview',
     desc: 'Quick summary of attendance, paid, and balances — daily and project-wise on their dedicated pages.',
   },
+  {
+    Icon: FileText, title: 'Salary Reports (Pro)',
+    desc: 'Generate detailed worker salary slips with full attendance, wage, and project-wise breakdown.',
+  },
+  {
+    Icon: PDF, title: 'PDF Export',
+    desc: 'Export attendance sheets and salary reports as PDF. Share with workers or keep digital records.',
+  }
 ];
 
 function FeatureCard({ Icon, title, desc, isPro }) {
@@ -90,7 +98,7 @@ export default function FeaturesSection() {
             <p style={{
               fontFamily: "'Outfit', sans-serif", fontSize: 17,
               color: 'var(--color-on-surface-variant)', maxWidth: 480, margin: '0 auto',
-            }}>Built around how contractors actually work on-site. No training needed.</p>
+            }}>Built for anyone who manages workers—track attendance, wages, dues, and project-wise earnings in a simple, practical way. No training needed.</p>
           </div>
 
           <div className="wl-features-grid">

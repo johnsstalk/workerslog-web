@@ -3,6 +3,7 @@ export default function HeroSection() {
     { value: '100%', label: 'Offline capable' },
     { value: 'AES-256', label: 'Encrypted locally' },
     { value: '₹0', label: 'To get started' },
+    {value: 'Multi-project', label: 'Support enabled'}
   ];
 
   return (
@@ -31,7 +32,7 @@ export default function HeroSection() {
               color: 'var(--color-on-surface)',
               marginBottom: 20,
             }}>
-              Track workers.<br />
+              Manage Your Workforce Smarter.<br />
               <span style={{ color: 'var(--color-primary)' }}>Not paperwork.</span>
             </h1>
 
