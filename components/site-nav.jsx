@@ -1,11 +1,17 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import SiteLogo from './site-logo';
 
 export default function SiteNav({ minimal = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isHome = pathname === '/';
+  const anchor = (id) => (isHome ? `#${id}` : `/#${id}`);
+
   const handleToggle = () => setMenuOpen(v => !v);
   const handleClose = () => setMenuOpen(false);
 
@@ -28,15 +34,18 @@ export default function SiteNav({ minimal = false }) {
           {!minimal && (
             <>
               <div className="wl-nav-links" style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-                {['Features', 'Pricing', 'Download'].map(l => (
-                  <a key={l} href={`#${l.toLowerCase()}`} style={{
-                    fontFamily: "'Outfit', sans-serif", fontSize: 15,
-                    color: 'var(--color-on-surface-variant)',
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.color = 'var(--color-on-surface)'}
-                  onMouseLeave={e => e.currentTarget.style.color = 'var(--color-on-surface-variant)'}
-                  >{l}</a>
-                ))}
+                {['Features', 'Pricing', 'Download'].map(l => {
+                  const id = l.toLowerCase();
+                  return (
+                    <a key={l} href={anchor(id)} style={{
+                      fontFamily: "'Outfit', sans-serif", fontSize: 15,
+                      color: 'var(--color-on-surface-variant)',
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.color = 'var(--color-on-surface)'}
+                    onMouseLeave={e => e.currentTarget.style.color = 'var(--color-on-surface-variant)'}
+                    >{l}</a>
+                  );
+                })}
                 <a href="/guide" style={{
                   fontFamily: "'Outfit', sans-serif", fontSize: 15,
                   color: 'var(--color-on-surface-variant)'
@@ -44,13 +53,13 @@ export default function SiteNav({ minimal = false }) {
               </div>
 
               <div className="wl-nav-cta" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <a href="#download" style={{
+                <a href={anchor('download')} style={{
                   padding: '8px 18px', borderRadius: 'var(--radius-m)',
                   border: '1px solid var(--color-outline-variant)',
                   fontSize: 14, fontWeight: 600, color: 'var(--color-on-surface)',
                   fontFamily: "'Outfit', sans-serif",
                 }}>Download APK</a>
-                <a href="#pricing" style={{
+                <a href={anchor('pricing')} style={{
                   padding: '8px 18px', borderRadius: 'var(--radius-m)',
                   background: 'var(--color-primary-brand)',
                   fontSize: 14, fontWeight: 600, color: '#FFFFFF',
@@ -76,26 +85,29 @@ export default function SiteNav({ minimal = false }) {
           display: 'flex', flexDirection: 'column',
           padding: '80px 24px 40px',
         }}>
-          {['Features', 'Pricing', 'Download'].map(l => (
-            <a key={l} href={`#${l.toLowerCase()}`} onClick={handleClose} style={{
-              fontFamily: "'Sora', sans-serif", fontSize: 24, fontWeight: 700,
-              color: 'var(--color-on-surface)', padding: '18px 0',
-              borderBottom: '1px solid var(--color-outline-variant)',
-            }}>{l}</a>
-          ))}
+          {['Features', 'Pricing', 'Download'].map(l => {
+            const id = l.toLowerCase();
+            return (
+              <a key={l} href={anchor(id)} onClick={handleClose} style={{
+                fontFamily: "'Sora', sans-serif", fontSize: 24, fontWeight: 700,
+                color: 'var(--color-on-surface)', padding: '18px 0',
+                borderBottom: '1px solid var(--color-outline-variant)',
+              }}>{l}</a>
+            );
+          })}
           <a href="/guide" onClick={handleClose} style={{
             fontFamily: "'Sora', sans-serif", fontSize: 24, fontWeight: 700,
             color: 'var(--color-on-surface)', padding: '18px 0',
             borderBottom: '1px solid var(--color-outline-variant)'
           }}>Guide</a>
           <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <a href="#download" onClick={handleClose} style={{
+            <a href={anchor('download')} onClick={handleClose} style={{
               padding: '14px', borderRadius: 'var(--radius-m)',
               border: '1px solid var(--color-outline-variant)',
               fontSize: 16, fontWeight: 600, color: 'var(--color-on-surface)',
               textAlign: 'center', fontFamily: "'Outfit', sans-serif",
             }}>Download APK</a>
-            <a href="#pricing" onClick={handleClose} style={{
+            <a href={anchor('pricing')} onClick={handleClose} style={{
               padding: '14px', borderRadius: 'var(--radius-m)',
               background: 'var(--color-primary-brand)',
               fontSize: 16, fontWeight: 600, color: '#FFFFFF',

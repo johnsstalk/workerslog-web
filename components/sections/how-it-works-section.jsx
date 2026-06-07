@@ -1,33 +1,50 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const STEPS = [
-  { num: '01', title: 'Workers List', desc: 'Name, job category, daily rate. Manage workers quickly.', img: '/screenshots/1-workerslist.png' },
-  { num: '02', title: 'Daily Records', desc: 'P / H / A / OT per worker. One tap each.', img: '/screenshots/2-workers_daily.png' },
-  { num: '03', title: 'Projects', desc: 'Add and track projects per worker with separate accounting and shares.', img: '/screenshots/8-worker_bagga_project.png' },
-  { num: '04', title: 'Add Record', desc: 'Create work and settlement entries with notes and payment method.', img: '/screenshots/5-work_entry_mode_1.png' },
-  { num: '05', title: 'Reports', desc: 'Generate PDF reports and salary slips for sharing or printing.', img: '/screenshots/12-bagga_slip.png' },
+  { 
+    num: '01', 
+    title: 'Add your workers', 
+    desc: 'Add name, job category, and daily rate. Set up each worker in under a minute.', 
+    img: '/screenshots/1-workerslist.png' 
+  },
+  { 
+    num: '02', 
+    title: 'Mark attendance daily', 
+    desc: 'P / H / A / OT per worker in one tap. Quickly record attendance for all workers.', 
+    img: '/screenshots/2-workers_daily.png' 
+  },
+  { 
+    num: '03', 
+    title: 'Manage projects', 
+    desc: 'Assign workers to projects and track earnings separately for each site.', 
+    img: '/screenshots/8-worker_bagga_project.png' 
+  },
+  { 
+    num: '04', 
+    title: 'Record payments', 
+    desc: 'Add advances, wages, and settlements. Running balance updates automatically.', 
+    img: '/screenshots/5-work_entry_mode_1.png' 
+  },
+  { 
+    num: '05', 
+    title: 'Generate reports', 
+    desc: 'Create detailed salary reports and download PDF slips for sharing or printing.', 
+    img: '/screenshots/12-bagga_slip.png' 
+  },
 ];
 
 export default function HowItWorksSection() {
   const [active, setActive] = useState(0);
-  const [prev, setPrev] = useState(null);
-  const [showNew, setShowNew] = useState(false);
+  const [showNew, setShowNew] = useState(true);
 
   const handleSetActive = (i) => {
     if (i === active) return;
-    setPrev(active);
     setActive(i);
     setShowNew(false);
-    // trigger crossfade on next tick
     setTimeout(() => setShowNew(true), 20);
   };
-
-  useEffect(() => {
-    if (prev === null) return;
-    // no-op: effect kept for potential future analytics or focus management
-  }, [prev]);
 
   return (
     <>
@@ -97,6 +114,7 @@ export default function HowItWorksSection() {
                       src={s.img}
                       alt={s.title}
                       className={`wl-preview-img ${i === active && showNew ? 'visible' : ''}`}
+                      loading={i === 0 ? "eager" : "lazy"}
                     />
                   ))}
                 </div>
@@ -125,8 +143,8 @@ export default function HowItWorksSection() {
         .wl-step.active { transform: translateY(-6px); border-color: var(--color-primary-brand); box-shadow: 0 18px 40px rgba(2,6,23,0.08); }
         .wl-step-num {
           flex-shrink: 0; width: 46px; height: 46px; border-radius: var(--radius-s);
-          background: var(--color-primary-brand); display: flex; align-items: center; justify-content: center;
-          font-family: 'Sora', sans-serif; font-weight: 800; font-size: 14px; color: #FFFFFF;
+          background: var(--color-primary-brand); display: flex; align-items: center; justifyContent: center;
+          font-family: 'Sora', sans-serif; font-weight: 800; fontSize: 14px; color: #FFFFFF;
           transition: transform 220ms ease, background 220ms ease;
         }
         .wl-step.active .wl-step-num { transform: scale(1.06); background: var(--color-primary); }
