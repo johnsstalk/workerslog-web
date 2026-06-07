@@ -1,14 +1,14 @@
 'use client';
 
-import SiteNav from '../components/site-nav';
-import SiteFooter from '../components/site-footer';
+import SiteNav from '../../components/site-nav';
+import SiteFooter from '../../components/site-footer';
 import { Copy, Heart, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 
 // === CONFIGURE THESE ===
 const UPI_ID = 'workerslog@paytm';           // ← Change to your real UPI ID
 const UPI_NAME = 'WorkersLog';
-const GITHUB_SPONSORS_URL = ''; // ← Update if different
+const GITHUB_SPONSORS_URL = 'https://github.com/sponsors/johnsstalk'; // ← Add your link or leave empty to hide
 const BUY_ME_A_COFFEE_URL = 'https://www.buymeacoffee.com/workerslog';
 // =======================
 
@@ -24,7 +24,6 @@ export default function SupportPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      // Fallback for older browsers
       const textArea = document.createElement('textarea');
       textArea.value = UPI_ID;
       document.body.appendChild(textArea);
@@ -216,55 +215,59 @@ export default function SupportPage() {
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <a
-                href={GITHUB_SPONSORS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '18px 22px',
-                  background: 'var(--color-surface)',
-                  border: '1px solid var(--color-outline-variant)',
-                  borderRadius: 'var(--radius-m)',
-                  textDecoration: 'none',
-                  color: 'var(--color-on-surface)',
-                }}
-              >
-                <div>
-                  <div style={{ fontWeight: 600, fontSize: 16 }}>GitHub Sponsors</div>
-                  <div style={{ fontSize: 14, color: 'var(--color-on-surface-variant)' }}>
-                    Recurring or one-time support
+              {GITHUB_SPONSORS_URL && (
+                <a
+                  href={GITHUB_SPONSORS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '18px 22px',
+                    background: 'var(--color-surface)',
+                    border: '1px solid var(--color-outline-variant)',
+                    borderRadius: 'var(--radius-m)',
+                    textDecoration: 'none',
+                    color: 'var(--color-on-surface)',
+                  }}
+                >
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: 16 }}>GitHub Sponsors</div>
+                    <div style={{ fontSize: 14, color: 'var(--color-on-surface-variant)' }}>
+                      Recurring or one-time support
+                    </div>
                   </div>
-                </div>
-                <ExternalLink size={18} color="var(--color-primary)" />
-              </a>
+                  <ExternalLink size={18} color="var(--color-primary)" />
+                </a>
+              )}
 
-              <a
-                href={BUY_ME_A_COFFEE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '18px 22px',
-                  background: 'var(--color-surface)',
-                  border: '1px solid var(--color-outline-variant)',
-                  borderRadius: 'var(--radius-m)',
-                  textDecoration: 'none',
-                  color: 'var(--color-on-surface)',
-                }}
-              >
-                <div>
-                  <div style={{ fontWeight: 600, fontSize: 16 }}>Buy Me a Coffee</div>
-                  <div style={{ fontSize: 14, color: 'var(--color-on-surface-variant)' }}>
-                    One-time support
+              {BUY_ME_A_COFFEE_URL && (
+                <a
+                  href={BUY_ME_A_COFFEE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '18px 22px',
+                    background: 'var(--color-surface)',
+                    border: '1px solid var(--color-outline-variant)',
+                    borderRadius: 'var(--radius-m)',
+                    textDecoration: 'none',
+                    color: 'var(--color-on-surface)',
+                  }}
+                >
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: 16 }}>Buy Me a Coffee</div>
+                    <div style={{ fontSize: 14, color: 'var(--color-on-surface-variant)' }}>
+                      One-time support
+                    </div>
                   </div>
-                </div>
-                <ExternalLink size={18} color="var(--color-primary)" />
-              </a>
+                  <ExternalLink size={18} color="var(--color-primary)" />
+                </a>
+              )}
             </div>
           </div>
 
