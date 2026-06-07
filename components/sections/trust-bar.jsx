@@ -3,11 +3,11 @@
 import { Shield, WifiOff, Users, Cloud, CreditCard } from 'lucide-react';
 
 const ITEMS = [
-  { Icon: Shield,     label: 'AES-256 Encrypted' },
-  { Icon: WifiOff,    label: '100% Offline Capable' },
-  { Icon: Users,      label: 'Made for Indian Contractors' },
-  { Icon: Cloud,      label: 'Cloud Backup on Pro' },
-  { Icon: CreditCard, label: 'UPI Payments Accepted' },
+  { Icon: Shield,     label: 'AES-256 Security' },
+  { Icon: WifiOff,    label: 'Offline First' },
+  { Icon: Users,      label: 'Built for anyone who manages workers' },
+  { Icon: Cloud,      label: 'Cloud Backup (Pro)' },
+  { Icon: CreditCard, label: 'In-App Purchases via Google Play' },
 ];
 
 export default function TrustBar() {
@@ -40,7 +40,7 @@ export default function TrustBar() {
                 <span style={{ 
                   marginLeft: 32, 
                   color: 'var(--color-outline-variant)',
-                  fontSize: 14,
+                  fontSize: 14 
                 }}>·</span>
               </span>
             );
