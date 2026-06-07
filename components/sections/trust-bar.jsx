@@ -1,9 +1,13 @@
+'use client';
+
+import { Shield, WifiOff, Users, Cloud, CreditCard } from 'lucide-react';
+
 const ITEMS = [
-  '🔒 AES-256 Encrypted',
-  '📶 100% Offline Capable',
-  '🇮🇳 Made for Indian Contractors',
-  '☁️ Cloud Backup on Pro',
-  '💳 UPI Payments Accepted',
+  { Icon: Shield,     label: 'AES-256 Encrypted' },
+  { Icon: WifiOff,    label: '100% Offline Capable' },
+  { Icon: Users,      label: 'Made for Indian Contractors' },
+  { Icon: Cloud,      label: 'Cloud Backup on Pro' },
+  { Icon: CreditCard, label: 'UPI Payments Accepted' },
 ];
 
 export default function TrustBar() {
@@ -14,21 +18,33 @@ export default function TrustBar() {
         borderBottom: '1px solid var(--color-outline-variant)',
         background: 'var(--color-surface)',
         overflow: 'hidden',
-        padding: '12px 0',
+        padding: '14px 0',
       }}>
         <div className="wl-trust-track">
-          {[...ITEMS, ...ITEMS].map((item, i) => (
-            <span key={i} style={{
-              fontFamily: "'Outfit', sans-serif",
-              fontSize: 13, fontWeight: 500,
-              color: 'var(--color-on-surface-variant)',
-              whiteSpace: 'nowrap',
-              padding: '0 28px',
-            }}>
-              {item}
-              <span style={{ marginLeft: 28, color: 'var(--color-outline-variant)' }}>·</span>
-            </span>
-          ))}
+          {[...ITEMS, ...ITEMS].map((item, i) => {
+            const Icon = item.Icon;
+            return (
+              <span key={i} style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                fontFamily: "'Outfit', sans-serif",
+                fontSize: 13,
+                fontWeight: 500,
+                color: 'var(--color-on-surface-variant)',
+                whiteSpace: 'nowrap',
+                padding: '0 32px',
+              }}>
+                <Icon size={15} strokeWidth={2.2} color="var(--color-primary)" />
+                {item.label}
+                <span style={{ 
+                  marginLeft: 32, 
+                  color: 'var(--color-outline-variant)',
+                  fontSize: 14,
+                }}>·</span>
+              </span>
+            );
+          })}
         </div>
       </div>
 
@@ -36,7 +52,7 @@ export default function TrustBar() {
         .wl-trust-track {
           display: flex;
           width: max-content;
-          animation: wl-scroll 28s linear infinite;
+          animation: wl-scroll 32s linear infinite;
         }
         @keyframes wl-scroll {
           from { transform: translateX(0); }

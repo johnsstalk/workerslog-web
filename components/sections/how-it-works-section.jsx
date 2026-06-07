@@ -132,7 +132,7 @@ export default function HowItWorksSection() {
           align-items: center;
         }
         .wl-step {
-          display: flex; gap: 20px; align-items: flex-start;
+          display: flex; gap: 20px; align-items: center;
           background: var(--color-surface-container);
           border: 1px solid var(--color-outline-variant);
           border-radius: var(--radius-card);

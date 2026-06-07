@@ -5,9 +5,9 @@ import SiteLogo from './site-logo';
 export default function SiteFooter() {
   const links = [
     { label: 'Support', href: '/support' },
+    { label: 'Contact', href: '/contact' },
     { label: 'Privacy Policy', href: '/privacy' },
     { label: 'Terms', href: '/terms' },
-    { label: 'Contact', href: 'mailto:workers-log.dev@gmail.com' },
   ];
 
   return (
