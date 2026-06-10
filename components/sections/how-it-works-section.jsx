@@ -3,41 +3,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 const STEPS = [
-  {
-    num: '01',
-    title: 'Add your workers',
-    desc: 'Add name, job category, and daily rate. Set up each worker in under a minute.',
-    darkImg: '/screenshots/1-workerslist.png',
-    lightImg: '/screenshots/1-workerslist.png',
-  },
-  {
-    num: '02',
-    title: 'Mark attendance daily',
-    desc: 'Mark P / H / A / OT per worker in one tap.',
-    darkImg: '/screenshots/2-workers_daily.png',
-    lightImg: '/screenshots/2-workers_daily.png',
-  },
-  {
-    num: '03',
-    title: 'Manage projects',
-    desc: 'Assign workers to projects and track earnings separately.',
-    darkImg: '/screenshots/5-work_entry_mode_1.png',
-    lightImg: '/screenshots/5-work_entry_mode_1.png',
-  },
-  {
-    num: '04',
-    title: 'Record payments',
-    desc: 'Add advances, wages, and settlements automatically.',
-    darkImg: '/screenshots/8-worker_bagga_project.png',
-    lightImg: '/screenshots/8-worker_bagga_project.png',
-  },
-  {
-    num: '05',
-    title: 'Generate reports',
-    desc: 'Create detailed salary reports and PDF slips.',
-    darkImg: '/screenshots/12-bagga_slip.png',
-    lightImg: '/screenshots/12-bagga_slip.png',
-  },
+  { num: '01', title: 'Add your workers', desc: 'Add name, job category, and daily rate. Set up each worker in under a minute.', darkImg: '/screenshots/1-workerslist.png', lightImg: '/screenshots/1-workerslist.png' },
+  { num: '02', title: 'Mark attendance daily', desc: 'Mark P / H / A / OT per worker in one tap.', darkImg: '/screenshots/2-workers_daily.png', lightImg: '/screenshots/2-workers_daily.png' },
+  { num: '03', title: 'Manage projects', desc: 'Assign workers to projects and track earnings separately.', darkImg: '/screenshots/5-work_entry_mode_1.png', lightImg: '/screenshots/5-work_entry_mode_1.png' },
+  { num: '04', title: 'Record payments', desc: 'Add advances, wages, and settlements automatically.', darkImg: '/screenshots/8-worker_bagga_project.png', lightImg: '/screenshots/8-worker_bagga_project.png' },
+  { num: '05', title: 'Generate reports', desc: 'Create detailed salary reports and PDF slips.', darkImg: '/screenshots/12-bagga_slip.png', lightImg: '/screenshots/12-bagga_slip.png' },
 ];
 
 export default function HowItWorksSection() {
@@ -49,11 +19,9 @@ export default function HowItWorksSection() {
   const currentStep = STEPS[active];
   const currentImage = isDarkMode ? currentStep.darkImg : currentStep.lightImg;
 
-  // Theme detection
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     setIsDarkMode(mediaQuery.matches);
-
     const handler = (e) => setIsDarkMode(e.matches);
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
@@ -74,7 +42,6 @@ export default function HowItWorksSection() {
     setActive((prev) => (prev === 0 ? STEPS.length - 1 : prev - 1));
   }, []);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') nextStep();
@@ -84,47 +51,39 @@ export default function HowItWorksSection() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nextStep, prevStep]);
 
-  // Touch swipe
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
+  const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
   const handleTouchEnd = (e) => {
     const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) {
-      diff > 0 ? nextStep() : prevStep();
-    }
+    if (Math.abs(diff) > 50) diff > 0 ? nextStep() : prevStep();
   };
 
-  // Image animation style
   const imageStyle = {
     transform: `translateX(${direction * 10}px)`,
     transition: 'transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.3s ease',
   };
 
   return (
-    <section className="bg-[var(--color-surface)] py-16 md:py-20 px-6">
-      <div className="max-w-[1100px] mx-auto">
+    <section style={{ background: 'var(--color-surface)', padding: '64px 24px' }}>
+      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="text-xs font-bold tracking-[3px] text-[var(--color-primary)] mb-3">
+        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '3px', color: 'var(--color-primary)', marginBottom: '12px' }}>
             HOW IT WORKS
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tighter mb-4">
+          <h2 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '16px' }}>
             Up and running in minutes
           </h2>
-          <p className="text-lg text-[var(--color-on-surface-variant)] max-w-md mx-auto">
+          <p style={{ fontSize: '18px', color: 'var(--color-on-surface-variant)', maxWidth: '420px', margin: '0 auto' }}>
             No setup fee. No training. No paperwork.
           </p>
         </div>
 
         {/* Phone Mockup */}
-        <div className="flex justify-center mb-10">
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '40px' }}>
           <div
             onClick={nextStep}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            className="cursor-pointer active:scale-[0.985] transition-transform"
             style={{
               width: '240px',
               aspectRatio: '9 / 19',
@@ -133,41 +92,22 @@ export default function HowItWorksSection() {
               padding: '12px',
               border: '1px solid #222',
               boxShadow: '0 30px 80px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255,255,255,0.06)',
+              cursor: 'pointer',
             }}
           >
-            <div
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: '36px',
-                overflow: 'hidden',
-                background: '#000',
-                position: 'relative',
-                boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.1)',
-              }}
-            >
-              {/* Notch */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '10px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: '96px',
-                  height: '22px',
-                  background: '#111',
-                  borderRadius: '999px',
-                  zIndex: 10,
-                }}
-              />
-
-              {/* Screenshot */}
+            <div style={{
+              width: '100%', height: '100%', borderRadius: '36px', overflow: 'hidden',
+              background: '#000', position: 'relative', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.1)'
+            }}>
+              <div style={{
+                position: 'absolute', top: '10px', left: '50%', transform: 'translateX(-50%)',
+                width: '96px', height: '22px', background: '#111', borderRadius: '999px', zIndex: 10
+              }} />
               <img
                 key={active}
                 src={currentImage}
                 alt={currentStep.title}
-                className="w-full h-full object-cover select-none"
-                style={imageStyle}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', ...imageStyle }}
                 draggable={false}
               />
             </div>
@@ -175,44 +115,47 @@ export default function HowItWorksSection() {
         </div>
 
         {/* Progress Bar */}
-        <div className="max-w-[420px] mx-auto mb-6">
-          <div className="h-[3px] bg-[var(--color-outline-variant)] rounded-full overflow-hidden">
-            <div
-              className="h-full bg-[var(--color-primary)] transition-all duration-300"
-              style={{ width: `${((active + 1) / STEPS.length) * 100}%` }}
-            />
+        <div style={{ maxWidth: '420px', margin: '0 auto 24px' }}>
+          <div style={{ height: '3px', background: 'var(--color-outline-variant)', borderRadius: '999px', overflow: 'hidden' }}>
+            <div style={{
+              height: '100%', background: 'var(--color-primary)',
+              width: `${((active + 1) / STEPS.length) * 100}%`, transition: 'width 0.4s cubic-bezier(0.32, 0.72, 0, 1)'
+            }} />
           </div>
         </div>
 
         {/* Step Buttons */}
-        <div className="max-w-[720px] mx-auto">
-          <div className="flex flex-wrap justify-center gap-2">
+        <div style={{ maxWidth: '720px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px' }}>
             {STEPS.map((step, index) => {
               const isActive = index === active;
               return (
                 <button
                   key={index}
                   onClick={() => goToStep(index)}
-                  className={`
-                    flex items-center gap-2.5 px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all active:scale-[0.985]
-                    ${isActive
-                      ? 'bg-[var(--color-primary)] text-[#0F1418] border border-[var(--color-primary)] shadow-sm'
-                      : 'bg-[var(--color-surface-container)] border border-[var(--color-outline-variant)] hover:bg-[var(--color-surface-container-high)] text-[var(--color-on-surface)]'
-                    }
-                  `}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    padding: '10px 18px', borderRadius: '14px',
+                    border: isActive ? '1px solid var(--color-primary)' : '1px solid var(--color-outline-variant)',
+                    background: isActive ? 'var(--color-primary)' : 'var(--color-surface-container)',
+                    color: isActive ? '#0F1418' : 'var(--color-on-surface)',
+                    fontSize: '14px', fontWeight: 600, cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
                 >
-                  <span className={`font-bold ${isActive ? 'text-[#0F1418]' : 'text-[var(--color-primary)]'}`}>
+                  <span style={{ fontWeight: 700, color: isActive ? '#0F1418' : 'var(--color-primary)' }}>
                     {step.num}
                   </span>
-                  <span className="hidden sm:inline tracking-tight">{step.title}</span>
+                  <span style={{ display: window.innerWidth < 640 ? 'none' : 'inline' }}>
+                    {step.title}
+                  </span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Hint */}
-        <p className="text-center mt-6 text-sm text-[var(--color-on-surface-variant)] opacity-70">
+        <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '13px', color: 'var(--color-on-surface-variant)', opacity: 0.7 }}>
           Tap the phone or use ← → keys • Swipe on mobile
         </p>
       </div>
