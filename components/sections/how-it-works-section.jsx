@@ -57,32 +57,18 @@ export default function HowItWorksSection() {
   const currentStep = STEPS[active];
   const currentImage = isDarkMode ? currentStep.darkImg : currentStep.lightImg;
 
-  const goToStep = (index) => {
-    setActive(index);
-  };
-
-  const nextStep = () => {
-    setActive((prev) => (prev + 1) % STEPS.length);
-  };
-
-  const prevStep = () => {
-    setActive((prev) => (prev === 0 ? STEPS.length - 1 : prev - 1));
-  };
+  const goToStep = (index) => setActive(index);
+  const nextStep = () => setActive((prev) => (prev + 1) % STEPS.length);
+  const prevStep = () => setActive((prev) => (prev === 0 ? STEPS.length - 1 : prev - 1));
 
   // Swipe Support
   let touchStartX = 0;
 
-  const handleTouchStart = (e) => {
-    touchStartX = e.touches[0].clientX;
-  };
-
+  const handleTouchStart = (e) => { touchStartX = e.touches[0].clientX; };
   const handleTouchEnd = (e) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX - touchEndX;
-
+    const diff = touchStartX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) {
-      if (diff > 0) nextStep();
-      else prevStep();
+      diff > 0 ? nextStep() : prevStep();
     }
   };
 
@@ -108,7 +94,7 @@ export default function HowItWorksSection() {
             onClick={nextStep}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            className="phone cursor-pointer active:scale-[0.985] transition-transform"
+            className="cursor-pointer transition-transform active:scale-[0.985]"
             style={{
               width: '240px',
               aspectRatio: '9 / 19',
@@ -133,8 +119,8 @@ export default function HowItWorksSection() {
           </div>
         </div>
 
-        {/* Bottom Navigation Steps */}
-        <div className="max-w-3xl mx-auto">
+        {/* Bottom Navigation - Improved */}
+        <div className="max-w-4xl mx-auto">
           <div className="flex flex-wrap justify-center gap-2">
             {STEPS.map((step, index) => {
               const isActive = index === active;
@@ -142,33 +128,27 @@ export default function HowItWorksSection() {
                 <button
                   key={index}
                   onClick={() => goToStep(index)}
-                  className={`nav-step flex items-center gap-2 px-4 py-2.5 rounded-2xl border text-sm font-medium transition-all
+                  className={`
+                    group flex items-center gap-2.5 px-5 py-2.5 rounded-2xl border text-sm font-medium
+                    transition-all duration-200 active:scale-[0.985]
                     ${isActive 
-                      ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white' 
-                      : 'bg-[var(--color-surface-container)] border-[var(--color-outline-variant)] hover:border-zinc-600 text-[var(--color-on-surface)]'
-                    }`}
+                      ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-sm' 
+                      : 'bg-[var(--color-surface-container)] border-[var(--color-outline-variant)] hover:border-zinc-600 text-[var(--color-on-surface)] hover:bg-[var(--color-surface-container-high)]'
+                    }
+                  `}
                 >
-                  <span className="font-bold">{step.num}</span>
-                  <span className="hidden sm:inline">{step.title}</span>
+                  <span className={`font-bold transition-colors ${isActive ? 'text-white' : 'text-[var(--color-primary)] group-hover:text-[var(--color-primary)]'}`}>
+                    {step.num}
+                  </span>
+                  <span className="hidden sm:inline font-medium tracking-tight">
+                    {step.title}
+                  </span>
                 </button>
               );
             })}
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        .phone {
-          box-shadow: 0 25px 70px rgb(0 0 0 / 0.45);
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .phone:hover {
-          box-shadow: 0 30px 80px rgb(0 0 0 / 0.5);
-        }
-        .nav-step {
-          transition: all 0.2s ease;
-        }
-      `}</style>
     </section>
   );
 }
