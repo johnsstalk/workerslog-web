@@ -44,7 +44,7 @@ export default function HowItWorksSection() {
   const [active, setActive] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [direction, setDirection] = useState(0);
-  const touchStartX = useRef(0);
+  const touchStartX = useRef<number>(0);
 
   const currentStep = STEPS[active];
   const currentImage = isDarkMode ? currentStep.darkImg : currentStep.lightImg;
@@ -57,16 +57,6 @@ export default function HowItWorksSection() {
     const handler = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') nextStep();
-      if (e.key === 'ArrowLeft') prevStep();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const goToStep = (index: number) => {
@@ -83,6 +73,16 @@ export default function HowItWorksSection() {
     setDirection(-1);
     setActive((prev) => (prev === 0 ? STEPS.length - 1 : prev - 1));
   }, []);
+
+  // Keyboard navigation (moved AFTER nextStep/prevStep)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') nextStep();
+      if (e.key === 'ArrowLeft') prevStep();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nextStep, prevStep]);
 
   // Touch swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -195,8 +195,8 @@ export default function HowItWorksSection() {
                   onClick={() => goToStep(index)}
                   className={`
                     flex items-center gap-2.5 px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all active:scale-[0.985]
-                    ${isActive 
-                      ? 'bg-[var(--color-primary)] text-[#0F1418] border border-[var(--color-primary)] shadow-sm' 
+                    ${isActive
+                      ? 'bg-[var(--color-primary)] text-[#0F1418] border border-[var(--color-primary)] shadow-sm'
                       : 'bg-[var(--color-surface-container)] border border-[var(--color-outline-variant)] hover:bg-[var(--color-surface-container-high)] text-[var(--color-on-surface)]'
                     }
                   `}
