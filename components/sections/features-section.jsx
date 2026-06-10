@@ -22,21 +22,21 @@ const FEATURES = [
   {
     Icon: CreditCard, title: 'Settlement Tracking',
     desc: 'Record advances, cash payments, and final settlements. The ledger auto-updates. No disputes.',
+  }
+  {
+    Icon: LayoutDashboard, title: 'An Overview',
+    desc: 'Quick summary of attendance, paid, and balances — daily and project-wise on their dedicated pages.',
   },
   {
     Icon: Cloud, title: 'Cloud Backup (Pro)',
     desc: 'Sync to secure cloud automatically. Switch phones without losing a single record. Restore in seconds.',
   },
   {
-    Icon: LayoutDashboard, title: 'Overview',
-    desc: 'Quick summary of attendance, paid, and balances — daily and project-wise on their dedicated pages.',
-  },
-  {
     Icon: FileText, title: 'Salary Reports (Pro)',
     desc: 'Generate detailed worker salary slips with full attendance, wage, and project-wise breakdown.',
   },
   {
-    Icon: FileOutput, title: 'PDF Export',
+    Icon: FileOutput, title: 'An in-depth PDF export (PRO)',
     desc: 'Export attendance sheets and salary reports as PDF. Share with workers or keep digital records.',
   }
 ];
