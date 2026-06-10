@@ -3,11 +3,41 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 const STEPS = [
-  { num: '01', title: 'Add your workers', desc: 'Add name, job category, and daily rate. Set up each worker in under a minute.', darkImg: '/screenshots/1-workerslist.png', lightImg: '/screenshots/1-workerslist.png' },
-  { num: '02', title: 'Mark attendance daily', desc: 'Mark P / H / A / OT per worker in one tap.', darkImg: '/screenshots/2-workers_daily.png', lightImg: '/screenshots/2-workers_daily.png' },
-  { num: '03', title: 'Manage projects', desc: 'Assign workers to projects and track earnings separately.', darkImg: '/screenshots/5-work_entry_mode_1.png', lightImg: '/screenshots/5-work_entry_mode_1.png' },
-  { num: '04', title: 'Record payments', desc: 'Add advances, wages, and settlements automatically.', darkImg: '/screenshots/8-worker_bagga_project.png', lightImg: '/screenshots/8-worker_bagga_project.png' },
-  { num: '05', title: 'Generate reports', desc: 'Create detailed salary reports and PDF slips.', darkImg: '/screenshots/12-bagga_slip.png', lightImg: '/screenshots/12-bagga_slip.png' },
+  {
+    num: '01',
+    title: 'Add your workers',
+    desc: 'Add name, job category, and daily rate. Set up each worker in under a minute.',
+    darkImg: '/screenshots/1-workerslist.png',
+    lightImg: '/screenshots/1-workerslist.png',
+  },
+  {
+    num: '02',
+    title: 'Mark attendance daily',
+    desc: 'Mark P / H / A / OT per worker in one tap.',
+    darkImg: '/screenshots/2-workers_daily.png',
+    lightImg: '/screenshots/2-workers_daily.png',
+  },
+  {
+    num: '03',
+    title: 'Manage projects',
+    desc: 'Assign workers to projects and track earnings separately.',
+    darkImg: '/screenshots/5-work_entry_mode_1.png',
+    lightImg: '/screenshots/5-work_entry_mode_1.png',
+  },
+  {
+    num: '04',
+    title: 'Record payments',
+    desc: 'Add advances, wages, and settlements automatically.',
+    darkImg: '/screenshots/8-worker_bagga_project.png',
+    lightImg: '/screenshots/8-worker_bagga_project.png',
+  },
+  {
+    num: '05',
+    title: 'Generate reports',
+    desc: 'Create detailed salary reports and PDF slips.',
+    darkImg: '/screenshots/12-bagga_slip.png',
+    lightImg: '/screenshots/12-bagga_slip.png',
+  },
 ];
 
 export default function HowItWorksSection() {
@@ -51,10 +81,16 @@ export default function HowItWorksSection() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nextStep, prevStep]);
 
-  const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
   const handleTouchEnd = (e) => {
     const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) diff > 0 ? nextStep() : prevStep();
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) nextStep();
+      else prevStep();
+    }
   };
 
   const imageStyle = {
@@ -118,8 +154,10 @@ export default function HowItWorksSection() {
         <div style={{ maxWidth: '420px', margin: '0 auto 24px' }}>
           <div style={{ height: '3px', background: 'var(--color-outline-variant)', borderRadius: '999px', overflow: 'hidden' }}>
             <div style={{
-              height: '100%', background: 'var(--color-primary)',
-              width: `${((active + 1) / STEPS.length) * 100}%`, transition: 'width 0.4s cubic-bezier(0.32, 0.72, 0, 1)'
+              height: '100%',
+              background: 'var(--color-primary)',
+              width: `${((active + 1) / STEPS.length) * 100}%`,
+              transition: 'width 0.4s cubic-bezier(0.32, 0.72, 0, 1)'
             }} />
           </div>
         </div>
@@ -134,12 +172,17 @@ export default function HowItWorksSection() {
                   key={index}
                   onClick={() => goToStep(index)}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: '10px',
-                    padding: '10px 18px', borderRadius: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '10px 18px',
+                    borderRadius: '14px',
                     border: isActive ? '1px solid var(--color-primary)' : '1px solid var(--color-outline-variant)',
                     background: isActive ? 'var(--color-primary)' : 'var(--color-surface-container)',
                     color: isActive ? '#0F1418' : 'var(--color-on-surface)',
-                    fontSize: '14px', fontWeight: 600, cursor: 'pointer',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
                     transition: 'all 0.2s ease',
                   }}
                 >
