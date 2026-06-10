@@ -1,8 +1,8 @@
 const FREE_FEATURES = [
-  'Unlimited workers',
+  '3 workers',
   'Daily attendance (P/H/A/OT/PH)',
   'Settlement and payment entries',
-  'Project accounting',
+  '1 Project accounting per worker',
   'Balance and ledger view',
   'Local encrypted storage',
   'Works offline — no internet needed',
@@ -61,7 +61,7 @@ export default function PricingSection() {
             <p style={{
               fontFamily: "'Outfit', sans-serif", fontSize: 17,
               color: 'var(--color-on-surface-variant)',
-            }}>All core features are free forever. Pay only for cloud sync and Pro tools.</p>
+            }}>All basic features are free. Pay only for cloud sync and Pro features.</p>
           </div>
 
           <div className="wl-pricing-grid">
@@ -72,11 +72,11 @@ export default function PricingSection() {
               borderRadius: 'var(--radius-xl)',
               padding: '32px',
             }}>
-              <p style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 18, color: 'var(--color-on-surface)', marginBottom: 8 }}>Free</p>
+              <p style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 18, color: 'var(--color-on-surface)', marginBottom: 8 }}>Basic</p>
               <div style={{ marginBottom: 4 }}>
                 <span style={{ fontFamily: "'Sora', sans-serif", fontWeight: 800, fontSize: 36, color: 'var(--color-on-surface)' }}>₹0</span>
               </div>
-              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 13, color: 'var(--color-on-surface-variant)', marginBottom: 28 }}>Forever free · No credit card</p>
+              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 13, color: 'var(--color-on-surface-variant)', marginBottom: 28 }}>Free · No credit card</p>
               <div style={{ borderTop: '1px solid var(--color-outline-variant)', paddingTop: 20, marginBottom: 28 }}>
                 {FREE_FEATURES.map(f => <FeatureLine key={f} label={f} />)}
                 {LOCKED_FEATURES.map(f => <FeatureLine key={f} label={f} locked />)}
