@@ -37,12 +37,16 @@ const STEPS = [
 
 export default function HowItWorksSection() {
   const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
+
+  const goToStep = (newIndex) => {
+    if (newIndex === active) return;
+    setDirection(newIndex > active ? 1 : -1);
+    setActive(newIndex);
+  };
 
   return (
-    <section style={{ 
-      background: 'var(--color-surface)', 
-      padding: 'var(--space-3xl) var(--section-px)' 
-    }}>
+    <section style={{ background: 'var(--color-surface)', padding: 'var(--space-3xl) var(--section-px)' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -61,67 +65,32 @@ export default function HowItWorksSection() {
           </h2>
           <p style={{
             fontFamily: "'Outfit', sans-serif", fontSize: 17,
-            color: 'var(--color-on-surface-variant)', marginBottom: 20,
+            color: 'var(--color-on-surface-variant)',
           }}>
             No setup fee. No training. No paperwork.
           </p>
-
-          <a 
-            href="/guide" 
-            style={{
-              display: 'inline-block',
-              padding: '10px 20px',
-              borderRadius: 10,
-              background: 'var(--color-primary-brand)',
-              color: '#FFFFFF',
-              fontWeight: 700,
-              textDecoration: 'none',
-              fontFamily: "'Outfit', sans-serif",
-              fontSize: 15,
-            }}
-          >
-            Read the Complete Guide
-          </a>
         </div>
 
         <div className="wl-how-grid">
-          {/* Steps List */}
+          {/* Steps */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {STEPS.map((step, i) => {
               const isActive = i === active;
               return (
                 <div
-                  key={step.num}
+                  key={i}
                   className={`wl-step ${isActive ? 'active' : ''}`}
+                  onClick={() => goToStep(i)}
                   role="button"
                   tabIndex={0}
-                  aria-current={isActive ? 'step' : undefined}
-                  onClick={() => setActive(i)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setActive(i);
-                    }
-                  }}
+                  onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && goToStep(i)}
                 >
                   <div className="wl-step-num">{step.num}</div>
                   <div>
-                    <h3 style={{
-                      fontFamily: "'Sora', sans-serif",
-                      fontWeight: 700,
-                      fontSize: 16,
-                      color: 'var(--color-on-surface)',
-                      marginBottom: 6,
-                    }}>
+                    <h3 style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 16, marginBottom: 6 }}>
                       {step.title}
                     </h3>
-                    <p style={{
-                      fontFamily: "'Outfit', sans-serif",
-                      fontSize: 14,
-                      lineHeight: 1.6,
-                      color: 'var(--color-on-surface-variant)',
-                      margin: 0,
-                    }}>
+                    <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 14, lineHeight: 1.6, margin: 0 }}>
                       {step.desc}
                     </p>
                   </div>
@@ -130,20 +99,54 @@ export default function HowItWorksSection() {
             })}
           </div>
 
-          {/* Screenshot Preview */}
+          {/* Animated Phone Mockup */}
           <div className="wl-how-preview">
             <div className="wl-preview-frame">
               <div className="wl-preview-inner">
-                {STEPS.map((step, i) => (
-                  <img
-                    key={step.img}
-                    src={step.img}
-                    alt={step.title}
-                    className={`wl-preview-img ${i === active ? 'visible' : ''}`}
-                    loading={i === 0 ? "eager" : "lazy"}
-                  />
-                ))}
+                {STEPS.map((step, i) => {
+                  const isActive = i === active;
+                  return (
+                    <img
+                      key={i}
+                      src={step.img}
+                      alt={step.title}
+                      className={`wl-preview-img ${isActive ? 'visible' : ''}`}
+                      style={{
+                        transform: isActive 
+                          ? 'translateY(0) scale(1)' 
+                          : `translateY(${direction * 30}px) scale(0.96)`,
+                        opacity: isActive ? 1 : 0,
+                        transition: 'all 0.45s cubic-bezier(0.32, 0.72, 0, 1)',
+                      }}
+                    />
+                  );
+                })}
               </div>
+            </div>
+
+            {/* Step Progress Dots */}
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              gap: 8, 
+              marginTop: 16 
+            }}>
+              {STEPS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goToStep(i)}
+                  style={{
+                    width: i === active ? 22 : 8,
+                    height: 8,
+                    borderRadius: 999,
+                    background: i === active ? 'var(--color-primary)' : 'var(--color-outline-variant)',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                  aria-label={`Go to step ${i + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -152,7 +155,7 @@ export default function HowItWorksSection() {
       <style>{`
         .wl-how-grid {
           display: grid;
-          grid-template-columns: 1fr 280px;
+          grid-template-columns: 1fr 300px;
           gap: 48px;
           align-items: start;
         }
@@ -193,7 +196,6 @@ export default function HowItWorksSection() {
           font-weight: 800;
           font-size: 15px;
           color: #FFFFFF;
-          transition: all 0.2s ease;
         }
 
         .wl-step.active .wl-step-num {
@@ -203,21 +205,36 @@ export default function HowItWorksSection() {
 
         .wl-preview-frame {
           width: 100%;
-          max-width: 280px;
+          max-width: 300px;
           aspect-ratio: 9 / 19.5;
-          border-radius: 32px;
-          padding: 8px;
-          background: #0b0b0b;
-          box-shadow: 0 20px 50px rgba(0,0,0,0.35), 
-                      0 0 0 1px var(--color-outline-variant);
+          border-radius: 40px;
+          padding: 10px;
+          background: linear-gradient(#1a1a1a, #0a0a0a);
+          box-shadow: 0 25px 70px rgba(0,0,0,0.4),
+                      0 0 0 12px #111,
+                      0 0 0 16px #222;
           margin: 0 auto;
+          position: relative;
+        }
+
+        .wl-preview-frame::before {
+          content: '';
+          position: absolute;
+          top: 12px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 120px;
+          height: 28px;
+          background: #000;
+          border-radius: 20px;
+          z-index: 2;
         }
 
         .wl-preview-inner {
           position: relative;
           width: 100%;
           height: 100%;
-          border-radius: 24px;
+          border-radius: 30px;
           overflow: hidden;
           background: #000;
         }
@@ -229,29 +246,14 @@ export default function HowItWorksSection() {
           height: 100%;
           object-fit: cover;
           object-position: top;
-          opacity: 0;
-          transform: translateY(10px) scale(0.985);
-          transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1);
         }
 
-        .wl-preview-img.visible {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-
-        /* Mobile */
         @media (max-width: 920px) {
           .wl-how-grid {
             grid-template-columns: 1fr;
-            gap: 32px;
           }
-          
           .wl-how-preview {
-            order: -1; /* Show image first on mobile */
-          }
-          
-          .wl-preview-frame {
-            max-width: 260px;
+            order: -1;
           }
         }
       `}</style>
