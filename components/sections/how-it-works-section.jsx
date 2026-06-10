@@ -44,7 +44,7 @@ export default function HowItWorksSection() {
   const [active, setActive] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [direction, setDirection] = useState(0);
-  const touchStartX = useRef<number>(0);
+  const touchStartX = useRef(0);
 
   const currentStep = STEPS[active];
   const currentImage = isDarkMode ? currentStep.darkImg : currentStep.lightImg;
@@ -54,12 +54,12 @@ export default function HowItWorksSection() {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     setIsDarkMode(mediaQuery.matches);
 
-    const handler = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
+    const handler = (e) => setIsDarkMode(e.matches);
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  const goToStep = (index: number) => {
+  const goToStep = (index) => {
     setDirection(index > active ? 1 : -1);
     setActive(index);
   };
@@ -74,9 +74,9 @@ export default function HowItWorksSection() {
     setActive((prev) => (prev === 0 ? STEPS.length - 1 : prev - 1));
   }, []);
 
-  // Keyboard navigation (moved AFTER nextStep/prevStep)
+  // Keyboard navigation
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') nextStep();
       if (e.key === 'ArrowLeft') prevStep();
     };
@@ -85,11 +85,11 @@ export default function HowItWorksSection() {
   }, [nextStep, prevStep]);
 
   // Touch swipe
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
+  const handleTouchEnd = (e) => {
     const diff = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) {
       diff > 0 ? nextStep() : prevStep();
@@ -97,7 +97,7 @@ export default function HowItWorksSection() {
   };
 
   // Image animation style
-  const imageStyle: React.CSSProperties = {
+  const imageStyle = {
     transform: `translateX(${direction * 10}px)`,
     transition: 'transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.3s ease',
   };
@@ -200,7 +200,6 @@ export default function HowItWorksSection() {
                       : 'bg-[var(--color-surface-container)] border border-[var(--color-outline-variant)] hover:bg-[var(--color-surface-container-high)] text-[var(--color-on-surface)]'
                     }
                   `}
-                  aria-current={isActive ? 'step' : undefined}
                 >
                   <span className={`font-bold ${isActive ? 'text-[#0F1418]' : 'text-[var(--color-primary)]'}`}>
                     {step.num}
