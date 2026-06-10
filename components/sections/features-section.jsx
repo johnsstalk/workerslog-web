@@ -21,7 +21,7 @@ const CORE_FEATURES = [
   {
     Icon: BarChart2,
     title: 'Project Accounting',
-    desc: 'Track contract work separately from daily labour. Set project rates, assign workers, and see what you owe.',
+    desc: 'Track up to 1 project per worker (max 3 projects with 3 workers). Set rates and see what you owe.',
   },
   {
     Icon: CreditCard,
@@ -39,7 +39,7 @@ const PRO_FEATURES = [
   {
     Icon: Cloud,
     title: 'Cloud Backup',
-    desc: 'Automatically sync to secure cloud. Switch phones without losing data. Restore everything in seconds.',
+    desc: 'Auto-sync every 5 minutes. Switch phones easily with full data restore. Access from multiple devices.',
     isPro: true,
   },
   {
