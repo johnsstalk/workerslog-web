@@ -22,7 +22,7 @@ const FEATURES = [
   {
     Icon: CreditCard, title: 'Settlement Tracking',
     desc: 'Record advances, cash payments, and final settlements. The ledger auto-updates. No disputes.',
-  }
+  },
   {
     Icon: LayoutDashboard, title: 'An Overview',
     desc: 'Quick summary of attendance, paid, and balances — daily and project-wise on their dedicated pages.',
