@@ -1,169 +1,289 @@
-"use client";
+'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 const STEPS = [
   { 
     num: '01', 
     title: 'Add your workers', 
     desc: 'Add name, job category, and daily rate. Set up each worker in under a minute.', 
-    img: '/screenshots/addworker.png'
+    img: '/screenshots/1-workerslist.png' 
   },
   { 
     num: '02', 
     title: 'Mark attendance daily', 
     desc: 'P / H / A / OT per worker in one tap. Quickly record attendance for all workers.', 
-    img: '/screenshots/workerentry.png' 
+    img: '/screenshots/2-workers_daily.png' 
   },
   { 
     num: '03', 
     title: 'Manage projects', 
     desc: 'Assign workers to projects and track earnings separately for each site.', 
-    img: '/screenshots/weeklyworkerprooject.png' 
+    img: '/screenshots/8-worker_bagga_project.png' 
   },
   { 
     num: '04', 
     title: 'Record payments', 
     desc: 'Add advances, wages, and settlements. Running balance updates automatically.', 
-    img: '/screenshots/workerentry.png' 
+    img: '/screenshots/5-work_entry_mode_1.png' 
   },
-  { 
-    num: '05', 
-    title: 'Generate reports', 
-    desc: 'Create detailed salary reports and download PDF slips for sharing or printing.', 
-    img: '/screenshots/12-bagga_slip.png' 
+  {
+    num: '05',
+    title: 'Generate reports',
+    desc: 'Create detailed salary reports and PDF slips.',
+    image: '/screenshots/12-bagga_slip.png',
   },
 ];
 
 export default function HowItWorksSection() {
   const [active, setActive] = useState(0);
-  const [showNew, setShowNew] = useState(true);
+  const [direction, setDirection] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const touchStartX = useRef(0);
 
-  const handleSetActive = (i) => {
-    if (i === active) return;
-    setActive(i);
-    setShowNew(false);
-    setTimeout(() => setShowNew(true), 20);
+  const currentStep = STEPS[active];
+  const prevIndex = active === 0 ? STEPS.length - 1 : active - 1;
+  const nextIndex = (active + 1) % STEPS.length;
+
+  // Responsive
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 720);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  const goToStep = (index) => {
+    setDirection(index > active ? 1 : -1);
+    setActive(index);
+  };
+
+  const nextStep = useCallback(() => {
+    setDirection(1);
+    setActive((prev) => (prev + 1) % STEPS.length);
+  }, []);
+
+  const prevStep = useCallback(() => {
+    setDirection(-1);
+    setActive((prev) => (prev === 0 ? STEPS.length - 1 : prev - 1));
+  }, []);
+
+  // Keyboard
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') nextStep();
+      if (e.key === 'ArrowLeft') prevStep();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nextStep, prevStep]);
+
+  // Touch
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 60) {
+      if (diff > 0) nextStep();
+      else prevStep();
+    }
+  };
+
+  // Reusable Phone Component
+  const PhoneMockup = ({ stepIndex, isMain = false, onClick }) => {
+    const step = STEPS[stepIndex];
+    const isActive = stepIndex === active;
+
+    return (
+      <div
+        onClick={onClick}
+        style={{
+          width: isMain ? 248 : 168,
+          height: isMain ? 520 : 355,
+          background: '#111111',
+          borderRadius: isMain ? 42 : 32,
+          padding: isMain ? 7 : 5,
+          boxShadow: isMain 
+            ? '0 50px 120px rgba(0,0,0,0.6), 0 0 0 1px var(--color-outline-variant), inset 0 0 0 1px rgba(255,255,255,0.08)'
+            : '0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px var(--color-outline-variant)',
+          position: 'relative',
+          cursor: 'pointer',
+          transition: 'all 0.4s cubic-bezier(0.32, 0.72, 0, 1)',
+          transform: isMain ? 'scale(1)' : 'scale(0.92)',
+          opacity: isMain ? 1 : 0.55,
+          zIndex: isMain ? 2 : 1,
+        }}
+      >
+        <div style={{
+          width: '100%',
+          height: '100%',
+          borderRadius: isMain ? 36 : 28,
+          overflow: 'hidden',
+          background: '#000',
+        }}>
+          <img
+            src={step.image}
+            alt={step.title}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'top',
+              transition: 'transform 0.4s cubic-bezier(0.32, 0.72, 0, 1)',
+              transform: isMain ? `translateX(${direction * 8}px)` : 'none',
+            }}
+            draggable={false}
+          />
+        </div>
+      </div>
+    );
   };
 
   return (
-    <>
-      <section style={{ background: 'var(--color-surface)', padding: 'var(--space-3xl) var(--section-px)' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 56 }}>
-            <span style={{
-              display: 'block', fontSize: 11, fontWeight: 700,
-              letterSpacing: '0.1em', textTransform: 'uppercase',
-              color: 'var(--color-primary)', fontFamily: "'Sora', sans-serif", marginBottom: 12,
-            }}>How it works</span>
-            <h2 style={{
-              fontFamily: "'Sora', sans-serif", fontWeight: 700,
-              fontSize: 'var(--text-h1)', color: 'var(--color-on-surface)', marginBottom: 16,
-            }}>Up and running in 3 minutes</h2>
-            <p style={{
-              fontFamily: "'Outfit', sans-serif", fontSize: 17,
-              color: 'var(--color-on-surface-variant)',
-            }}>No setup fee. No training. No paperwork.</p>
+    <section style={{ background: 'var(--color-surface)', padding: '64px 24px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <div style={{
+            fontSize: '11px', fontWeight: 700, letterSpacing: '3px',
+            color: 'var(--color-primary)', marginBottom: '12px'
+          }}>
+            HOW IT WORKS
+          </div>
+          <h2 style={{
+            fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 700,
+            letterSpacing: '-0.02em', marginBottom: '16px'
+          }}>
+            Up and running in minutes
+          </h2>
+          <p style={{
+            fontSize: '18px', color: 'var(--color-on-surface-variant)',
+            maxWidth: '420px', margin: '0 auto'
+          }}>
+            No setup fee. No training. No paperwork.
+          </p>
+        </div>
 
-            <div style={{ marginTop: 18 }}>
-              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 15, color: 'var(--color-on-surface-variant)', marginBottom: 12 }}>
-                For full step-by-step instructions and printable details, open the complete guide.
-              </p>
-              <a href="/guide" style={{
-                display: 'inline-block', padding: '10px 16px', borderRadius: 10,
-                background: 'var(--color-primary-brand)', color: '#FFFFFF', fontWeight: 700,
-                textDecoration: 'none', fontFamily: "'Outfit', sans-serif",
-              }}>Read the Guide</a>
+        {/* === NEW INTERACTIVE 3-PHONE PREVIEW === */}
+        <div 
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: isMobile ? '12px' : '24px',
+            marginBottom: '32px',
+            flexWrap: 'wrap',
+          }}
+        >
+          {/* Previous Step Preview */}
+          {!isMobile && (
+            <div onClick={() => goToStep(prevIndex)} style={{ cursor: 'pointer' }}>
+              <PhoneMockup stepIndex={prevIndex} />
             </div>
+          )}
+
+          {/* Main Phone (Current Step) */}
+          <div onClick={nextStep} style={{ cursor: 'pointer' }}>
+            <PhoneMockup stepIndex={active} isMain={true} />
           </div>
 
-          <div className="wl-how-grid">
-            {/* Steps column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {STEPS.map(({ num, title, desc }, i) => (
-                <div
-                  key={num}
-                  className={`wl-step ${i === active ? 'active' : ''}`}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => handleSetActive(i)}
-                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSetActive(i); } }}
-                >
-                  <div className="wl-step-num">{num}</div>
-                  <div>
-                    <h3 style={{
-                      fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 16,
-                      color: 'var(--color-on-surface)', marginBottom: 6,
-                    }}>{title}</h3>
-                    <p style={{
-                      fontFamily: "'Outfit', sans-serif", fontSize: 14, lineHeight: 1.6,
-                      color: 'var(--color-on-surface-variant)', margin: 0,
-                    }}>{desc}</p>
-                  </div>
-                </div>
-              ))}
+          {/* Next Step Preview */}
+          {!isMobile && (
+            <div onClick={() => goToStep(nextIndex)} style={{ cursor: 'pointer' }}>
+              <PhoneMockup stepIndex={nextIndex} />
             </div>
+          )}
+        </div>
 
-            {/* Screenshot preview */}
-            <div className="wl-how-preview" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <div className="wl-preview-frame">
-                <div className="wl-preview-inner">
-                  {STEPS.map((s, i) => (
-                    <img
-                      key={s.img}
-                      src={s.img}
-                      alt={s.title}
-                      className={`wl-preview-img ${i === active && showNew ? 'visible' : ''}`}
-                      loading={i === 0 ? "eager" : "lazy"}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
+        {/* Description */}
+        <p style={{
+          textAlign: 'center',
+          maxWidth: '480px',
+          margin: '0 auto 28px',
+          fontSize: '15.5px',
+          color: 'var(--color-on-surface-variant)',
+          lineHeight: 1.6
+        }}>
+          {currentStep.desc}
+        </p>
+
+        {/* Progress Bar */}
+        <div style={{ maxWidth: '420px', margin: '0 auto 24px' }}>
+          <div style={{
+            height: '3px',
+            background: 'var(--color-outline-variant)',
+            borderRadius: '999px',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              height: '100%',
+              background: 'var(--color-primary)',
+              width: `${((active + 1) / STEPS.length) * 100}%`,
+              transition: 'width 0.4s cubic-bezier(0.32, 0.72, 0, 1)'
+            }} />
           </div>
         </div>
-      </section>
 
-      <style>{`
-        .wl-how-grid {
-          display: grid;
-          grid-template-columns: 1fr 300px;
-          gap: 48px;
-          align-items: center;
-        }
-        .wl-step {
-          display: flex; gap: 20px; align-items: center;
-          background: var(--color-surface-container);
-          border: 1px solid var(--color-outline-variant);
-          border-radius: var(--radius-card);
-          padding: 20px; cursor: pointer;
-          transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
-        }
-        .wl-step:hover { transform: translateY(-2px); }
-        .wl-step.active { transform: translateY(-6px); border-color: var(--color-primary-brand); box-shadow: 0 18px 40px rgba(2,6,23,0.08); }
-        .wl-step-num {
-          flex-shrink: 0; width: 46px; height: 46px; border-radius: var(--radius-s);
-          background: var(--color-primary-brand); display: flex; align-items: center; justifyContent: center;
-          font-family: 'Sora', sans-serif; font-weight: 800; fontSize: 14px; color: #FFFFFF;
-          transition: transform 220ms ease, background 220ms ease;
-        }
-        .wl-step.active .wl-step-num { transform: scale(1.06); background: var(--color-primary); }
+        {/* Step Buttons - White text when active */}
+        <div style={{ maxWidth: '780px', margin: '0 auto' }}>
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '8px'
+          }}>
+            {STEPS.map((step, index) => {
+              const isActive = index === active;
+              return (
+                <button
+                  key={index}
+                  onClick={() => goToStep(index)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '11px 20px',
+                    borderRadius: '14px',
+                    border: isActive 
+                      ? '1px solid var(--color-primary)' 
+                      : '1px solid var(--color-outline-variant)',
+                    background: isActive 
+                      ? 'var(--color-primary)' 
+                      : 'var(--color-surface-container)',
+                    color: isActive ? '#FFFFFF' : 'var(--color-on-surface)',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  <span style={{ 
+                    fontWeight: 700, 
+                    color: isActive ? '#FFFFFF' : 'var(--color-primary)' 
+                  }}>
+                    {step.num}
+                  </span>
+                  {!isMobile && <span>{step.title}</span>}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-        .wl-preview-frame {
-          width: 240px; height: 520px; border-radius: 32px; padding: 6px; background: #0b0b0b;
-          box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px var(--color-outline-variant);
-        }
-        .wl-preview-inner { position: relative; width: 100%; height: 100%; border-radius: 26px; overflow: hidden; }
-        .wl-preview-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top;
-          opacity: 0; transform: translateY(8px) scale(0.995); transition: opacity 320ms ease, transform 420ms cubic-bezier(.2,.9,.2,1);
-        }
-        .wl-preview-img.visible { opacity: 1; transform: translateY(0) scale(1); }
-
-        @media (max-width: 920px) {
-          .wl-how-grid { grid-template-columns: 1fr; }
-          .wl-how-preview { display: none; }
-        }
-      `}</style>
-    </>
+        <p style={{
+          textAlign: 'center',
+          marginTop: '28px',
+          fontSize: '13px',
+          color: 'var(--color-on-surface-variant)',
+          opacity: 0.75
+        }}>
+          Tap phone or side previews • Use ← → keys • Swipe
+        </p>
+      </div>
+    </section>
   );
 }

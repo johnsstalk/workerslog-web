@@ -1,27 +1,34 @@
-const FREE_FEATURES = [
-  'Unlimited workers',
-  'Daily attendance (P/H/A/OT/PH)',
-  'Settlement and payment entries',
-  'Project accounting',
-  'Balance and ledger view',
-  'Local encrypted storage',
-  'Works offline — no internet needed',
+const BASIC_FEATURES = [
+'Up to 3 workers',
+'Daily attendance (P/H/A/OT/PH)',
+'Settlement and payment entries',
+'1 project per worker',
+'Balance and ledger view',
+'Local encrypted storage',
+'Works offline — no internet needed',
 ];
 
 const LOCKED_FEATURES = [
-  'Cloud backup and sync',
-  'Multi-device access',
-  'PDF salary slip export',
-  'Salary reports',
+'Cloud backup and sync',
+'Multi-device access',
+'PDF salary slip export',
+'Salary reports',
 ];
 
-const PRO_EXTRA = [
-  'Cloud backup and sync',
-  'Multi-device access',
-  'PDF salary slip export',
-  'Salary reports',
-  'Auto-sync every 5 minutes',
-  'Restore on new phone',
+const PRO_FEATURES = [
+'Unlimited workers',
+'Daily attendance (P/H/A/OT/PH)',
+'Settlement and payment entries',
+'Unlimited projects per worker',
+'Balance and ledger view',
+'Local encrypted storage',
+'Works offline — no internet needed',
+'Cloud backup and sync',
+'Multi-device access',
+'PDF salary slip export',
+'Salary reports',
+'Auto-sync every 5 minutes',
+'Restore on new phone',
 ];
 
 function FeatureLine({ label, locked }) {
@@ -61,7 +68,7 @@ export default function PricingSection() {
             <p style={{
               fontFamily: "'Outfit', sans-serif", fontSize: 17,
               color: 'var(--color-on-surface-variant)',
-            }}>All core features are free forever. Pay only for cloud sync and Pro tools.</p>
+            }}>All basic features are free. Pay only for cloud sync and Pro features.</p>
           </div>
 
           <div className="wl-pricing-grid">
@@ -72,13 +79,13 @@ export default function PricingSection() {
               borderRadius: 'var(--radius-xl)',
               padding: '32px',
             }}>
-              <p style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 18, color: 'var(--color-on-surface)', marginBottom: 8 }}>Free</p>
+              <p style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 18, color: 'var(--color-on-surface)', marginBottom: 8 }}>Basic</p>
               <div style={{ marginBottom: 4 }}>
                 <span style={{ fontFamily: "'Sora', sans-serif", fontWeight: 800, fontSize: 36, color: 'var(--color-on-surface)' }}>₹0</span>
               </div>
-              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 13, color: 'var(--color-on-surface-variant)', marginBottom: 28 }}>Forever free · No credit card</p>
+              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 13, color: 'var(--color-on-surface-variant)', marginBottom: 28 }}>Free · No credit card</p>
               <div style={{ borderTop: '1px solid var(--color-outline-variant)', paddingTop: 20, marginBottom: 28 }}>
-                {FREE_FEATURES.map(f => <FeatureLine key={f} label={f} />)}
+                {BASIC_FEATURES.map(f => <FeatureLine key={f} label={f} />)}
                 {LOCKED_FEATURES.map(f => <FeatureLine key={f} label={f} locked />)}
               </div>
               <a href="#download" style={{
@@ -96,16 +103,7 @@ export default function PricingSection() {
               border: '2px solid var(--color-primary)',
               borderRadius: 'var(--radius-xl)',
               padding: '32px',
-              position: 'relative',
             }}>
-              <span style={{
-                position: 'absolute', top: -13, left: '50%', transform: 'translateX(-50%)',
-                background: 'var(--color-primary-brand)',
-                color: '#FFFFFF', fontSize: 11, fontWeight: 700,
-                letterSpacing: '0.08em', textTransform: 'uppercase',
-                borderRadius: 'var(--radius-full)', padding: '4px 14px',
-                fontFamily: "'Sora', sans-serif",
-              }}>Most Popular</span>
               <p style={{ fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 18, color: 'var(--color-on-surface)', marginBottom: 8 }}>Pro</p>
               <div style={{ marginBottom: 4, display: 'flex', alignItems: 'baseline', gap: 6 }}>
                 <span style={{ fontFamily: "'Sora', sans-serif", fontWeight: 800, fontSize: 36, color: 'var(--color-on-surface)' }}>₹99</span>
@@ -113,8 +111,7 @@ export default function PricingSection() {
               </div>
               <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: 13, color: 'var(--color-primary)', marginBottom: 28 }}>or ₹799/year · save 33%</p>
               <div style={{ borderTop: '1px solid var(--color-outline-variant)', paddingTop: 20, marginBottom: 28 }}>
-                {FREE_FEATURES.map(f => <FeatureLine key={f} label={f} />)}
-                {PRO_EXTRA.map(f => <FeatureLine key={f} label={f} />)}
+                {PRO_FEATURES.map(f => <FeatureLine key={f} label={f} />)}
               </div>
               <a href="#download" style={{
                 display: 'block', textAlign: 'center',
@@ -122,7 +119,7 @@ export default function PricingSection() {
                 background: 'var(--color-primary-brand)',
                 fontSize: 15, fontWeight: 600, color: '#FFFFFF',
                 fontFamily: "'Outfit', sans-serif",
-              }}>Get Pro on Google Play</a>
+              }}>Upgrade to Pro</a>
               <p style={{
                 textAlign: 'center', marginTop: 12,
                 fontFamily: "'Outfit', sans-serif", fontSize: 12,

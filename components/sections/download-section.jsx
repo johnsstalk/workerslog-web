@@ -16,14 +16,14 @@ export default function DownloadSection() {
           <h2 style={{
             fontFamily: "'Sora', sans-serif", fontWeight: 700,
             fontSize: 'var(--text-h1)', color: 'var(--color-on-surface)', marginBottom: 16,
-          }}>Start today. Always free.</h2>
+          }}>Start today. Try it out for free.</h2>
 
           <p style={{
             fontFamily: "'Outfit', sans-serif", fontSize: 17, lineHeight: 1.6,
             color: 'var(--color-on-surface-variant)', marginBottom: 40,
           }}>
-            Download the APK directly or install from Google Play Store.
-            No sign-up required for the free tier.
+            Install it from the Google Play Store or download the APK directly.
+            Try out the free tier.
           </p>
 
           <div className="wl-dl-btns" style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
