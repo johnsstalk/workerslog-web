@@ -1,292 +1,241 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import SiteNav from '../../components/site-nav';
 import SiteFooter from '../../components/site-footer';
-import { Copy, Heart, ExternalLink } from 'lucide-react';
-import { useState } from 'react';
-
-// === CONFIGURE THESE ===
-const UPI_ID = 'workerslog@paytm';           // ← Change to your real UPI ID
-const UPI_NAME = 'WorkersLog';
-const GITHUB_SPONSORS_URL = 'https://github.com/sponsors/johnsstalk'; // ← Add your link or leave empty to hide
-const BUY_ME_A_COFFEE_URL = 'https://www.buymeacoffee.com/workerslog';
-// =======================
+import {
+  Heart,
+  ExternalLink,
+  Star,
+  Bug,
+  Instagram,
+  Twitter,
+  Smartphone,
+} from 'lucide-react';
 
 export default function SupportPage() {
-  const [copied, setCopied] = useState(false);
+  const cardsRef = useRef(null);
 
-  const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&cu=INR`;
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiLink)}&color=ADC6FF&bgcolor=1C242E`;
+  // entrance animation
+  useEffect(() => {
+    if (!cardsRef.current) return;
 
-  const handleCopyUPI = async () => {
-    try {
-      await navigator.clipboard.writeText(UPI_ID);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      const textArea = document.createElement('textarea');
-      textArea.value = UPI_ID;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+    const items = cardsRef.current.querySelectorAll('.support-card');
+
+    gsap.fromTo(
+      items,
+      { y: 20, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: 'power3.out',
+      }
+    );
+  }, []);
+
+  // hover animation
+  const handleEnter = (e) => {
+    gsap.to(e.currentTarget, {
+      y: -4,
+      scale: 1.01,
+      boxShadow: '0 10px 30px rgba(0,0,0,0.25)',
+      duration: 0.25,
+      ease: 'power2.out',
+    });
+  };
+
+  const handleLeave = (e) => {
+    gsap.to(e.currentTarget, {
+      y: 0,
+      scale: 1,
+      boxShadow: '0 0 0 rgba(0,0,0,0)',
+      duration: 0.25,
+      ease: 'power2.out',
+    });
   };
 
   return (
     <>
       <SiteNav />
+
       <main>
-        <section style={{
-          padding: 'var(--space-3xl) var(--section-px)',
-          maxWidth: 680,
-          margin: '0 auto',
-          textAlign: 'center',
-        }}>
+        <section
+          style={{
+            padding: 'var(--space-3xl) var(--section-px)',
+            maxWidth: 720,
+            margin: '0 auto',
+            textAlign: 'center',
+          }}
+        >
           {/* Header */}
           <div style={{ marginBottom: 48 }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 12,
-              background: 'rgba(173, 198, 255, 0.1)',
-              padding: '8px 20px',
-              borderRadius: 'var(--radius-full)',
-              marginBottom: 24,
-            }}>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 12,
+                background: 'rgba(173, 198, 255, 0.08)',
+                padding: '8px 20px',
+                borderRadius: 'var(--radius-full)',
+                marginBottom: 24,
+              }}
+            >
               <Heart size={18} color="var(--color-primary)" />
-              <span style={{
-                fontFamily: "'Sora', sans-serif",
-                fontSize: 14,
-                fontWeight: 600,
-                color: 'var(--color-primary)',
-                letterSpacing: '0.02em',
-              }}>
-                SUPPORT THE PROJECT
+              <span
+                style={{
+                  fontFamily: "'Sora', sans-serif",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: 'var(--color-primary)',
+                }}
+              >
+                Support & Feedback
               </span>
             </div>
 
-            <h1 style={{
-              fontFamily: "'Sora', sans-serif",
-              fontWeight: 700,
-              fontSize: 'var(--text-h1)',
-              color: 'var(--color-on-surface)',
-              marginBottom: 16,
-              lineHeight: 1.1,
-            }}>
-              Support Workers Log
+            <h1
+              style={{
+                fontFamily: "'Sora', sans-serif",
+                fontWeight: 700,
+                fontSize: 'var(--text-h1)',
+                color: 'var(--color-on-surface)',
+                marginBottom: 16,
+              }}
+            >
+              Help Improve Workers Log
             </h1>
-            <p style={{
-              fontFamily: "'Outfit', sans-serif",
-              fontSize: 18,
-              color: 'var(--color-on-surface-variant)',
-              maxWidth: 520,
-              margin: '0 auto',
-              lineHeight: 1.6,
-            }}>
-              Workers Log is free and will stay free for core features. 
-              Your support helps cover development, maintenance, and new features.
+
+            <p
+              style={{
+                fontFamily: "'Outfit', sans-serif",
+                fontSize: 18,
+                color: 'var(--color-on-surface-variant)',
+                lineHeight: 1.6,
+              }}
+            >
+              Follow updates, share feedback, report issues, and help improve the product.
             </p>
           </div>
 
-          {/* UPI Section */}
-          <div style={{
-            background: 'var(--color-surface-container)',
-            border: '1px solid var(--color-outline-variant)',
-            borderRadius: 'var(--radius-xl)',
-            padding: '40px 32px',
-            marginBottom: 32,
-            textAlign: 'left',
-          }}>
-            <div style={{ marginBottom: 24 }}>
-              <h2 style={{
-                fontFamily: "'Sora', sans-serif",
-                fontSize: 20,
-                fontWeight: 700,
-                color: 'var(--color-on-surface)',
-                marginBottom: 8,
-              }}>
-                UPI (Recommended)
-              </h2>
-              <p style={{
-                fontFamily: "'Outfit', sans-serif",
-                fontSize: 15,
-                color: 'var(--color-on-surface-variant)',
-              }}>
-                Fastest way for Indian users. Works with any UPI app.
-              </p>
-            </div>
-
-            {/* UPI ID + Copy */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-outline-variant)',
-              borderRadius: 'var(--radius-m)',
-              padding: '14px 20px',
-              marginBottom: 24,
-            }}>
-              <div style={{ flex: 1 }}>
-                <div style={{
-                  fontSize: 13,
-                  color: 'var(--color-on-surface-variant)',
-                  fontFamily: "'Outfit', sans-serif",
-                  marginBottom: 4,
-                }}>
-                  UPI ID
-                </div>
-                <div style={{
-                  fontFamily: "'Sora', sans-serif",
-                  fontSize: 18,
-                  fontWeight: 600,
-                  color: 'var(--color-on-surface)',
-                  letterSpacing: '0.5px',
-                }}>
-                  {UPI_ID}
-                </div>
+          {/* Cards */}
+          <div
+            ref={cardsRef}
+            style={{
+              display: 'grid',
+              gap: 14,
+              textAlign: 'left',
+            }}
+          >
+            <a
+              href="https://instagram.com/workerslog"
+              className="support-card"
+              onMouseEnter={handleEnter}
+              onMouseLeave={handleLeave}
+              style={cardStyle}
+            >
+              <Instagram size={20} color="var(--color-primary)" />
+              <div>
+                <div style={titleStyle}>Instagram</div>
+                <div style={descStyle}>Updates and announcements</div>
               </div>
-              <button
-                onClick={handleCopyUPI}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '10px 18px',
-                  background: copied ? 'var(--color-success)' : 'var(--color-primary-brand)',
-                  color: copied ? '#0F1418' : '#fff',
-                  border: 'none',
-                  borderRadius: 'var(--radius-m)',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontFamily: "'Outfit', sans-serif",
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <Copy size={16} />
-                {copied ? 'Copied!' : 'Copy'}
-              </button>
-            </div>
+              <ExternalLink size={18} />
+            </a>
 
-            {/* QR Code */}
-            <div style={{ textAlign: 'center' }}>
-              <img
-                src={qrUrl}
-                alt="UPI QR Code"
-                style={{
-                  width: 220,
-                  height: 220,
-                  borderRadius: 'var(--radius-l)',
-                  border: '1px solid var(--color-outline-variant)',
-                  background: '#1C242E',
-                }}
-              />
-              <p style={{
-                fontSize: 13,
-                color: 'var(--color-on-surface-variant)',
-                marginTop: 12,
-                fontFamily: "'Outfit', sans-serif",
-              }}>
-                Scan with any UPI app (GPay, PhonePe, Paytm, etc.)
-              </p>
-            </div>
+            <a
+              href="https://twitter.com/"
+              className="support-card"
+              onMouseEnter={handleEnter}
+              onMouseLeave={handleLeave}
+              style={cardStyle}
+            >
+              <Twitter size={20} color="var(--color-primary)" />
+              <div>
+                <div style={titleStyle}>Twitter / X</div>
+                <div style={descStyle}>Releases and changelog</div>
+              </div>
+              <ExternalLink size={18} />
+            </a>
+
+            <a
+              href="https://play.google.com/"
+              className="support-card"
+              onMouseEnter={handleEnter}
+              onMouseLeave={handleLeave}
+              style={cardStyle}
+            >
+              <Smartphone size={20} color="var(--color-primary)" />
+              <div>
+                <div style={titleStyle}>Play Store</div>
+                <div style={descStyle}>Download or update app</div>
+              </div>
+              <ExternalLink size={18} />
+            </a>
+
+            <a
+              href="https://play.google.com/"
+              className="support-card"
+              onMouseEnter={handleEnter}
+              onMouseLeave={handleLeave}
+              style={cardStyle}
+            >
+              <Star size={20} color="var(--color-primary)" />
+              <div>
+                <div style={titleStyle}>Rate the App</div>
+                <div style={descStyle}>Leave a review on Play Store</div>
+              </div>
+              <ExternalLink size={18} />
+            </a>
+
+            <a
+              href="mailto:support@workerslog.com"
+              className="support-card"
+              onMouseEnter={handleEnter}
+              onMouseLeave={handleLeave}
+              style={cardStyle}
+            >
+              <Bug size={20} color="var(--color-primary)" />
+              <div>
+                <div style={titleStyle}>Report a Bug</div>
+                <div style={descStyle}>Send issues directly to us</div>
+              </div>
+              <ExternalLink size={18} />
+            </a>
           </div>
-
-          {/* Other ways */}
-          <div style={{
-            background: 'var(--color-surface-container)',
-            border: '1px solid var(--color-outline-variant)',
-            borderRadius: 'var(--radius-xl)',
-            padding: '32px',
-            textAlign: 'left',
-          }}>
-            <h2 style={{
-              fontFamily: "'Sora', sans-serif",
-              fontSize: 20,
-              fontWeight: 700,
-              color: 'var(--color-on-surface)',
-              marginBottom: 20,
-            }}>
-              Other ways to support
-            </h2>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {GITHUB_SPONSORS_URL && (
-                <a
-                  href={GITHUB_SPONSORS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '18px 22px',
-                    background: 'var(--color-surface)',
-                    border: '1px solid var(--color-outline-variant)',
-                    borderRadius: 'var(--radius-m)',
-                    textDecoration: 'none',
-                    color: 'var(--color-on-surface)',
-                  }}
-                >
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: 16 }}>GitHub Sponsors</div>
-                    <div style={{ fontSize: 14, color: 'var(--color-on-surface-variant)' }}>
-                      Recurring or one-time support
-                    </div>
-                  </div>
-                  <ExternalLink size={18} color="var(--color-primary)" />
-                </a>
-              )}
-
-              {BUY_ME_A_COFFEE_URL && (
-                <a
-                  href={BUY_ME_A_COFFEE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '18px 22px',
-                    background: 'var(--color-surface)',
-                    border: '1px solid var(--color-outline-variant)',
-                    borderRadius: 'var(--radius-m)',
-                    textDecoration: 'none',
-                    color: 'var(--color-on-surface)',
-                  }}
-                >
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: 16 }}>Buy Me a Coffee</div>
-                    <div style={{ fontSize: 14, color: 'var(--color-on-surface-variant)' }}>
-                      One-time support
-                    </div>
-                  </div>
-                  <ExternalLink size={18} color="var(--color-primary)" />
-                </a>
-              )}
-            </div>
-          </div>
-
-          {/* Note */}
-          <p style={{
-            marginTop: 40,
-            fontSize: 14,
-            color: 'var(--color-on-surface-variant)',
-            fontFamily: "'Outfit', sans-serif",
-            maxWidth: 480,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}>
-            Donations are completely voluntary. Core features of Workers Log will always remain free. 
-            Thank you for supporting independent development from India 🇮🇳
-          </p>
         </section>
       </main>
+
       <SiteFooter />
     </>
   );
 }
+
+/* styles */
+const cardStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 16,
+  padding: '18px 20px',
+  background: 'var(--color-surface-container)',
+  border: '1px solid var(--color-outline-variant)',
+  borderRadius: 'var(--radius-m)',
+  textDecoration: 'none',
+  color: 'var(--color-on-surface)',
+  cursor: 'pointer',
+  willChange: 'transform',
+};
+
+const titleStyle = {
+  fontSize: 16,
+  fontWeight: 600,
+  fontFamily: "'Sora', sans-serif",
+};
+
+const descStyle = {
+  fontSize: 13,
+  color: 'var(--color-on-surface-variant)',
+  fontFamily: "'Outfit', sans-serif",
+};
