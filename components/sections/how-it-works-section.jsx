@@ -13,19 +13,19 @@ const STEPS = [
     num: '02', 
     title: 'Mark attendance daily', 
     desc: 'P / H / A / OT per worker in one tap. Quickly record attendance for all workers.', 
-    img: '/screenshots/dailyledger.png' 
+    img: '/screenshots/dailyledger.png'
   },
   { 
     num: '03', 
     title: 'Manage projects', 
     desc: 'Assign workers to projects and track earnings separately for each site.', 
-    img: '/screenshots/workerproject.png' 
+    img: '/screenshots/workerproject.png'
   },
   { 
     num: '04', 
     title: 'Record payments', 
     desc: 'Add advances, wages, and settlements. Running balance updates automatically.', 
-    img: '/screenshots/workerentry.png' 
+    img: '/screenshots/workerentry.png'
   },
   {
     num: '05',
