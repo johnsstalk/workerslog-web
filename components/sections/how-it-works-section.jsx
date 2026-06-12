@@ -7,25 +7,25 @@ const STEPS = [
     num: '01', 
     title: 'Add your workers', 
     desc: 'Add name, job category, and daily rate. Set up each worker in under a minute.', 
-    img: '/screenshots/addworker.png'
+    image: '/screenshots/addworker.png'
   },
   { 
     num: '02', 
     title: 'Mark attendance daily', 
     desc: 'P / H / A / OT per worker in one tap. Quickly record attendance for all workers.', 
-    img: '/screenshots/dailyledger.png'
+    image: '/screenshots/dailyledger.png'
   },
   { 
     num: '03', 
     title: 'Manage projects', 
     desc: 'Assign workers to projects and track earnings separately for each site.', 
-    img: '/screenshots/workerproject.png'
+    image: '/screenshots/workerproject.png'
   },
   { 
     num: '04', 
     title: 'Record payments', 
     desc: 'Add advances, wages, and settlements. Running balance updates automatically.', 
-    img: '/screenshots/workerentry.png'
+    image: '/screenshots/workerentry.png'
   },
   {
     num: '05',
