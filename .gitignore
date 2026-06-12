@@ -1,0 +1,47 @@
+# SECRETS — never commit these
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Google service account key (if you ever download one)
+*service-account*.json
+*serviceaccount*.json
+google-credentials.json
+credentials.json
+
+# DEPENDENCIES
+node_modules/
+
+# NEXT.JS BUILD OUTPUT
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# VERCEL
+.vercel
+
+# OS / EDITOR JUNK
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+*.suo
+*.user
+
+# LOGS & DEBUG
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# MISC BUILD / CACHE
+.cache/
+dist/
+coverage/
