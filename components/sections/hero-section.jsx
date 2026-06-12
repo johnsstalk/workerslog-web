@@ -100,7 +100,7 @@ export default function HeroSection() {
                 borderRadius: 35, overflow: 'hidden',
               }}>
                 <img
-                  src="/screenshots/1-workerslist.png"
+                  src="/screenshots/workerslist.png"
                   alt="Workers Log app — worker list screen"
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
                 />
