@@ -1,20 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// --- Safe GSAP import for Next.js (avoids SSR crash) ---
-let gsap;
-let ScrollTrigger;
 if (typeof window !== 'undefined') {
-  gsap = (await import('gsap')).gsap;
-  ScrollTrigger = (await import('gsap/ScrollTrigger')).ScrollTrigger;
   gsap.registerPlugin(ScrollTrigger);
 }
-
-// NOTE: The dynamic import above requires your file to be in a
-// plain Client Component. If you see a build error, use the
-// useEffect-based import pattern shown in the comments below
-// instead (see "Alternative safe import" comment).
 
 const STEPS = [
   {
@@ -49,239 +41,304 @@ const STEPS = [
   },
 ];
 
+// Each "distance" from the active phone maps to a visual slot.
+// dist 0 = active center, dist ±1 = adjacent, dist ±2 = far sides
+const SLOTS = {
+  '-2': { x: -355, scale: 0.58, opacity: 0.18 },
+  '-1': { x: -195, scale: 0.78, opacity: 0.46 },
+   '0': { x:    0, scale: 1.00, opacity: 1.00 },
+   '1': { x:  195, scale: 0.78, opacity: 0.46 },
+   '2': { x:  355, scale: 0.58, opacity: 0.18 },
+};
+
+const SLOTS_MOBILE = {
+  '-2': { x: -188, scale: 0.50, opacity: 0.10 },
+  '-1': { x: -112, scale: 0.70, opacity: 0.36 },
+   '0': { x:    0, scale: 1.00, opacity: 1.00 },
+   '1': { x:  112, scale: 0.70, opacity: 0.36 },
+   '2': { x:  188, scale: 0.50, opacity: 0.10 },
+};
+
+// Shortest circular distance from active to index
+function circDist(index, active, total) {
+  const raw = (index - active + total) % total;
+  return raw > total / 2 ? raw - total : raw;
+}
+
+function getSlot(index, active, total, isMobile) {
+  const dist = circDist(index, active, total);
+  const clamped = Math.max(-2, Math.min(2, dist));
+  const table = isMobile ? SLOTS_MOBILE : SLOTS;
+  return {
+    ...table[String(clamped)],
+    zIndex: 5 - Math.abs(clamped), // center = 5, far = 1
+  };
+}
+
+// Phone dimensions
+const PHONE_W = 220;
+const PHONE_H = 462;
+const PHONE_W_MOBILE = 188;
+const PHONE_H_MOBILE = 395;
+
 export default function HowItWorksSection() {
   const [active, setActive] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
-  // FIX 3: Track direction in a ref, not state.
-  // State is async — by the time the useEffect reads it, it may be stale.
-  // A ref updates synchronously so the animation effect always gets the
-  // correct value immediately.
-  const directionRef = useRef(0);
+  const sectionRef   = useRef(null);
+  const phoneRefs    = useRef([]);
+  const titleRef     = useRef(null);
+  const descRef      = useRef(null);
+  const touchStartX  = useRef(null);
 
-  const sectionRef = useRef(null);
-  const phoneRef = useRef(null);
-  const descRef = useRef(null);
-  const touchStartX = useRef(0);
+  // First render flags — phones should snap, not animate, on initial load
+  const isFirstPhone = useRef(true);
+  const isFirstText  = useRef(true);
 
-  const currentStep = STEPS[active];
-  const prevIndex = active === 0 ? STEPS.length - 1 : active - 1;
-  const nextIndex = (active + 1) % STEPS.length;
+  const nextStep = useCallback(() => setActive(p => (p + 1) % STEPS.length), []);
+  const prevStep = useCallback(() => setActive(p => (p === 0 ? STEPS.length - 1 : p - 1)), []);
 
-  // Responsive
+  // Responsive breakpoint
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 720);
+    const check = () => setIsMobile(window.innerWidth < 640);
     check();
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  const goToStep = (index) => {
-    directionRef.current = index > active ? 1 : -1; // sync, no batching issue
-    setActive(index);
-  };
-
-  const nextStep = useCallback(() => {
-    directionRef.current = 1;
-    setActive((prev) => (prev + 1) % STEPS.length);
-  }, []);
-
-  const prevStep = useCallback(() => {
-    directionRef.current = -1;
-    setActive((prev) => (prev === 0 ? STEPS.length - 1 : prev - 1));
-  }, []);
-
-  // Keyboard
+  // Keyboard nav
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const onKey = (e) => {
       if (e.key === 'ArrowRight') nextStep();
-      if (e.key === 'ArrowLeft') prevStep();
+      if (e.key === 'ArrowLeft')  prevStep();
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [nextStep, prevStep]);
 
-  // Touch
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-  const handleTouchEnd = (e) => {
+  // Touch swipe
+  const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const onTouchEnd   = (e) => {
+    if (touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 60) {
-      if (diff > 0) nextStep();
-      else prevStep();
-    }
+    if (Math.abs(diff) > 48) diff > 0 ? nextStep() : prevStep();
+    touchStartX.current = null;
   };
 
-  // FIX 1: Wrap GSAP in gsap.context() and return ctx.revert() for cleanup.
-  // Without this, in Next.js Strict Mode the effect runs twice and you get
-  // two ScrollTrigger instances stacked on top of each other, causing the
-  // animation to fire at wrong scroll positions or not at all.
+  // Scroll reveal for the whole section
   useEffect(() => {
-    if (!gsap || !sectionRef.current) return;
-
+    if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.from(sectionRef.current, {
         opacity: 0,
-        y: 60,
-        duration: 1,
+        y: 48,
+        duration: 0.9,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 80%',
-          once: true, // fire once only — prevents replaying when scrolling back
+          start: 'top 82%',
+          once: true,
         },
       });
     }, sectionRef);
-
-    return () => ctx.revert(); // <-- cleans up ScrollTrigger + tweens on unmount
+    return () => ctx.revert();
   }, []);
 
-  // FIX 2: Guard with an early return when the ref isn't ready yet.
-  // On first mount `phoneRef.current` is valid, but GSAP shouldn't animate
-  // from an offset on load — only on subsequent step changes.
-  const isFirstMount = useRef(true);
+  // Animate all 5 phones whenever active index or mobile flag changes.
+  // First render: gsap.set (instant). Subsequent: gsap.to (animated).
   useEffect(() => {
-    if (!gsap || !phoneRef.current) return;
-    if (isFirstMount.current) {
-      isFirstMount.current = false;
-      return; // skip animation on initial render
-    }
+    const snap = isFirstPhone.current;
+    if (snap) isFirstPhone.current = false;
 
-    gsap.fromTo(
-      phoneRef.current,
-      {
-        x: directionRef.current > 0 ? 80 : -80, // FIX 3: read ref, always current
-        opacity: 0,
-        scale: 0.95,
-      },
-      {
-        x: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 0.5,
-        ease: 'power3.out',
+    phoneRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const slot = getSlot(i, active, STEPS.length, isMobile);
+
+      // zIndex can't be tweened — always set immediately
+      gsap.set(el, { zIndex: slot.zIndex });
+
+      if (snap) {
+        gsap.set(el, { x: slot.x, scale: slot.scale, opacity: slot.opacity });
+      } else {
+        gsap.to(el, {
+          x: slot.x,
+          scale: slot.scale,
+          opacity: slot.opacity,
+          duration: 0.52,
+          ease: 'power3.out',
+        });
       }
-    );
-  }, [active]);
+    });
+  }, [active, isMobile]);
 
-  // Text animation — same first-mount guard
-  const isFirstTextMount = useRef(true);
+  // Fade title + description text on step change (skip first mount)
   useEffect(() => {
-    if (!gsap || !descRef.current) return;
-    if (isFirstTextMount.current) {
-      isFirstTextMount.current = false;
-      return;
-    }
-
+    if (isFirstText.current) { isFirstText.current = false; return; }
+    const els = [titleRef.current, descRef.current].filter(Boolean);
     gsap.fromTo(
-      descRef.current,
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' }
+      els,
+      { y: 10, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.32, ease: 'power2.out', stagger: 0.06 }
     );
   }, [active]);
 
-  const PhoneMockup = ({ stepIndex, isMain = false, onClick }) => {
-    const step = STEPS[stepIndex];
-    return (
-      <div
-        onClick={onClick}
-        style={{
-          width: isMain ? 248 : 168,
-          height: isMain ? 520 : 355,
-          background: '#111',
-          borderRadius: isMain ? 42 : 32,
-          padding: isMain ? 7 : 5,
-          boxShadow: isMain
-            ? '0 50px 120px rgba(0,0,0,0.6)'
-            : '0 20px 50px rgba(0,0,0,0.4)',
-          cursor: 'pointer',
-          transform: isMain ? 'scale(1)' : 'scale(0.92)',
-          opacity: isMain ? 1 : 0.55,
-          transition: 'all 0.3s ease',
-        }}
-      >
-        <img
-          src={step.image}
-          alt={step.title}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            borderRadius: 28,
-          }}
-        />
-      </div>
-    );
-  };
+  const phoneW = isMobile ? PHONE_W_MOBILE : PHONE_W;
+  const phoneH = isMobile ? PHONE_H_MOBILE : PHONE_H;
 
   return (
-    <section ref={sectionRef} style={{ padding: '64px 24px', background: 'var(--color-surface)' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <section
+      ref={sectionRef}
+      style={{
+        padding: '80px 0 68px',
+        background: 'var(--color-surface)',
+        overflow: 'hidden', // clip side phones cleanly
+      }}
+    >
 
-        {/* HEADER */}
-        <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <h2 style={{ fontSize: 42, fontWeight: 700 }}>
-            Up and running in minutes
-          </h2>
-        </div>
+      {/* ── Header ── */}
+      <div style={{ textAlign: 'center', marginBottom: 52, padding: '0 24px' }}>
+        <p style={{
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: '0.13em',
+          textTransform: 'uppercase',
+          color: 'var(--color-primary)',
+          marginBottom: 12,
+        }}>
+          How it works
+        </p>
+        <h2 style={{
+          fontSize: 'clamp(26px, 4vw, 40px)',
+          fontWeight: 700,
+          lineHeight: 1.15,
+          color: 'var(--color-on-surface)',
+        }}>
+          Up and running in minutes
+        </h2>
+      </div>
 
-        {/* PHONES */}
-        <div
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
+      {/* ── Carousel ── */}
+      <div
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        style={{
+          position: 'relative',
+          height: phoneH + 20,    // slight breathing room
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {STEPS.map((step, i) => (
+          <div
+            key={i}
+            ref={el => (phoneRefs.current[i] = el)}
+            onClick={() => { if (i !== active) setActive(i); }}
+            style={{
+              position: 'absolute',
+              width: phoneW,
+              height: phoneH,
+              cursor: i === active ? 'default' : 'pointer',
+              willChange: 'transform, opacity',
+              transformOrigin: 'center center',
+            }}
+          >
+            {/* Phone bezel */}
+            <div style={{
+              width: '100%',
+              height: '100%',
+              background: '#07090d',
+              borderRadius: isMobile ? 34 : 40,
+              padding: isMobile ? 5 : 6,
+              boxShadow: i === active
+                ? '0 36px 90px rgba(0,0,0,0.72), 0 0 0 1px rgba(255,255,255,0.07)'
+                : '0 14px 36px rgba(0,0,0,0.38)',
+            }}>
+              {/* Screen */}
+              <div style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: isMobile ? 29 : 34,
+                overflow: 'hidden',
+                background: '#111',
+              }}>
+                <img
+                  src={step.image}
+                  alt={step.title}
+                  draggable={false}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block',
+                    userSelect: 'none',
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Step info ── */}
+      <div style={{ textAlign: 'center', padding: '0 24px', marginTop: 32, marginBottom: 26 }}>
+        <p
+          ref={titleRef}
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 24,
-            marginBottom: 30,
+            fontSize: isMobile ? 16 : 18,
+            fontWeight: 600,
+            color: 'var(--color-on-surface)',
+            marginBottom: 8,
+            letterSpacing: '-0.01em',
           }}
         >
-          {!isMobile && <PhoneMockup stepIndex={prevIndex} />}
-
-          <div ref={phoneRef}>
-            <PhoneMockup stepIndex={active} isMain onClick={nextStep} />
-          </div>
-
-          {!isMobile && <PhoneMockup stepIndex={nextIndex} />}
-        </div>
-
-        {/* DESCRIPTION */}
+          <span style={{ color: 'var(--color-primary)', marginRight: 8, fontWeight: 500, fontSize: '0.85em' }}>
+            {STEPS[active].num}
+          </span>
+          {STEPS[active].title}
+        </p>
         <p
           ref={descRef}
           style={{
-            textAlign: 'center',
-            maxWidth: 480,
-            margin: '0 auto 30px',
-            fontSize: 16,
-            color: '#777',
+            maxWidth: 400,
+            margin: '0 auto',
+            fontSize: isMobile ? 13 : 14,
+            lineHeight: 1.7,
+            color: 'var(--color-on-surface-variant)',
           }}
         >
-          {currentStep.desc}
+          {STEPS[active].desc}
         </p>
-
-        {/* STEP BUTTONS */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, flexWrap: 'wrap' }}>
-          {STEPS.map((step, i) => (
-            <button
-              key={i}
-              onClick={() => goToStep(i)}
-              style={{
-                padding: '10px 16px',
-                borderRadius: 12,
-                border: i === active ? '1px solid #000' : '1px solid #ccc',
-                background: i === active ? '#000' : '#fff',
-                color: i === active ? '#fff' : '#000',
-                cursor: 'pointer',
-              }}
-            >
-              {step.num}
-            </button>
-          ))}
-        </div>
-
       </div>
+
+      {/* ── Progress dots ── */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 6,
+      }}>
+        {STEPS.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            aria-label={`Go to step ${i + 1}`}
+            style={{
+              height: 6,
+              width: i === active ? 24 : 6,
+              borderRadius: 9999,
+              border: 'none',
+              padding: 0,
+              background: i === active
+                ? 'var(--color-primary)'
+                : 'var(--color-outline-variant)',
+              cursor: 'pointer',
+              transition: 'width 0.28s cubic-bezier(0.4,0,0.2,1), background 0.25s ease',
+            }}
+          />
+        ))}
+      </div>
+
     </section>
   );
 }
